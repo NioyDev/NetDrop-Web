@@ -1,0 +1,18 @@
+{
+  "name": "netdrop-web",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Sitio oficial de NetDrop (versiones Python y Rust): comparte archivos por la red local con un código QR.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "0.170.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}
