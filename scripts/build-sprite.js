@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const projectRoot = 'C:\\dev\\NetDrop-Web';
+const projectRoot = process.cwd();
 const spritePath = path.join(projectRoot, 'public', 'icons', 'sprite.svg');
 const indexPath = path.join(projectRoot, 'index.html');
 const jsDir = path.join(projectRoot, 'js');

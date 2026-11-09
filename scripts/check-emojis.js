@@ -4,7 +4,7 @@ import path from 'path';
 // Regex estricta para cualquier pictograma extendido o selector de variación de emoji
 const emojiRegex = /[\p{Extended_Pictographic}\uFE0F]/u;
 
-const projectRoot = 'C:\\dev\\NetDrop-Web';
+const projectRoot = process.cwd();
 const targets = ['index.html', 'site.webmanifest', 'css', 'js', 'public', 'dist'];
 const excludeFiles = ['three.module.js', 'three-D-SAjKju.js'];
 const extensions = ['.html', '.css', '.js', '.json', '.webmanifest', '.md'];
