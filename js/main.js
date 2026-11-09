@@ -98,7 +98,7 @@ export function applyTheme(themeId, save = true) {
 // 3. ScrollSpy y Resaltado de Anclas
 export function initScrollSpy() {
   const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+  const navLinks = document.querySelectorAll('.nav-link[href^="#"], .mobile-nav-link[href^="#"]');
   if (!sections.length || !navLinks.length) return;
 
   const observer = new IntersectionObserver((entries) => {
@@ -191,6 +191,50 @@ export function initFaqAccordion() {
   });
 }
 
+// 7. Navegación Móvil
+export function initMobileNav() {
+  const toggleBtn = document.getElementById('mobile-menu-toggle');
+  const drawer = document.getElementById('mobile-nav-drawer');
+  if (!toggleBtn || !drawer) return;
+
+  function closeMenu() {
+    toggleBtn.classList.remove('is-active');
+    toggleBtn.setAttribute('aria-expanded', 'false');
+    drawer.classList.remove('is-open');
+  }
+
+  toggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = drawer.classList.contains('is-open');
+    if (isOpen) {
+      closeMenu();
+    } else {
+      toggleBtn.classList.add('is-active');
+      toggleBtn.setAttribute('aria-expanded', 'true');
+      drawer.classList.add('is-open');
+    }
+  });
+
+  const links = drawer.querySelectorAll('.mobile-nav-link, a');
+  links.forEach(l => {
+    l.addEventListener('click', () => {
+      closeMenu();
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!drawer.contains(e.target) && !toggleBtn.contains(e.target)) {
+      closeMenu();
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 1040) {
+      closeMenu();
+    }
+  });
+}
+
 // Inicialización consolidada
 document.addEventListener('DOMContentLoaded', () => {
   initThemeEngine();
@@ -199,4 +243,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initTerminal();
   initDownloadTabs();
   initFaqAccordion();
+  initMobileNav();
 });
