@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página no encontrada - NetDrop</title>
+  <meta name="robots" content="noindex, follow">
+  <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+  <link rel="stylesheet" href="./css/style.css">
+  <style>
+    .error-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      background: var(--bg-base);
+    }
+    .error-code {
+      font-size: 5rem;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 1rem;
+      font-family: var(--font-mono);
+    }
+    .error-title {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: var(--text-heading);
+    }
+    .error-desc {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      max-width: 440px;
+    }
+  </style>
+</head>
+<body>
+  <div class="error-wrapper">
+    <div class="error-code">404</div>
+    <h1 class="error-title">Página no encontrada</h1>
+    <p class="error-desc">La ruta solicitada no existe o ha sido unificada en la nueva página principal de NetDrop.</p>
+    <a href="./#inicio" class="btn btn-primary">Volver al Inicio</a>
+  </div>
+</body>
+</html>

@@ -1,6 +1,6 @@
 /**
- * NetDrop-Web - Escena 3D del Hero con three.js
- * Carga modular con tree-shaking, lazy load, control de visibilidad y dispose
+ * NetDrop-Web - Escena 3D del Hero con Three.js (Modo Oscuro Técnico)
+ * Detección segura de WebGL en canvas aislado, esqueleto sin texto y arranque inmediato
  */
 
 import logoUrl from '../assets/logo.png';
@@ -23,7 +23,8 @@ import {
   TubeGeometry,
   TextureLoader,
   Group,
-  Color
+  Color,
+  AdditiveBlending
 } from 'three';
 
 let scene, camera, renderer;
@@ -40,34 +41,53 @@ let targetRotX = 0, targetRotY = 0;
 let sceneGroup;
 
 // Obtener color CSS actual
-function getCssVar(varName, fallback = '#c85a32') {
+function getCssVar(varName, fallback = '#e2693d') {
   const val = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
   return val ? val : fallback;
+}
+
+// Prueba no destructiva de WebGL en canvas aislado
+function checkWebGLSupport() {
+  try {
+    const testCanvas = document.createElement('canvas');
+    return !!(window.WebGLRenderingContext && (
+      testCanvas.getContext('webgl2') || 
+      testCanvas.getContext('webgl') || 
+      testCanvas.getContext('experimental-webgl')
+    ));
+  } catch (e) {
+    return false;
+  }
 }
 
 export function initHeroScene(containerId = 'hero-scene-container', canvasId = 'hero-canvas') {
   const container = document.getElementById(containerId);
   const canvas = document.getElementById(canvasId);
-  const fallback = container ? container.querySelector('.hero-fallback') : null;
+  const skeleton = container ? container.querySelector('.hero-skeleton') : null;
 
   if (!container || !canvas) return;
 
-  // Comprobar soporte WebGL
-  try {
-    const glTest = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-    if (!glTest) throw new Error('WebGL no disponible');
-  } catch (err) {
-    console.warn('[NetDrop-Web] WebGL no disponible en este entorno, conservando fallback visual.', err);
+  // Comprobar soporte WebGL sin contaminar el canvas de Three.js
+  if (!checkWebGLSupport()) {
+    console.info('[NetDrop-Web] WebGL no disponible en este dispositivo. Mostrando ilustración vectorial estática.');
     return;
   }
 
-  // Observer de intersección para lazy-load e inicio controlado
+  // Detección directa si ya está en viewport para arrancar de inmediato
+  const rect = container.getBoundingClientRect();
+  const inViewportNow = rect.top < window.innerHeight && rect.bottom > 0;
+
+  if (inViewportNow && !scene) {
+    setupThree(container, canvas, skeleton);
+  }
+
+  // IntersectionObserver para pausar cuando el usuario hace scroll
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       isVisible = entry.isIntersecting;
       if (isVisible) {
         if (!scene) {
-          setupThree(container, canvas, fallback);
+          setupThree(container, canvas, skeleton);
         } else if (!animFrameId) {
           startLoop();
         }
@@ -75,11 +95,11 @@ export function initHeroScene(containerId = 'hero-scene-container', canvasId = '
         stopLoop();
       }
     });
-  }, { threshold: 0.1 });
+  }, { threshold: 0.05 });
 
   observer.observe(container);
 
-  // Control de pestaña activa (Page Visibility API)
+  // Control de visibilidad de pestaña (Page Visibility API)
   document.addEventListener('visibilitychange', () => {
     isTabActive = !document.hidden;
     if (isTabActive && isVisible) {
@@ -93,18 +113,18 @@ export function initHeroScene(containerId = 'hero-scene-container', canvasId = '
   window.addEventListener('netdrop-theme-change', updateThemeColors);
 }
 
-function setupThree(container, canvas, fallback) {
+function setupThree(container, canvas, skeleton) {
   const width = container.clientWidth || 480;
-  const height = container.clientHeight || 480;
+  const height = container.clientHeight || 330;
 
   // 1. Escena
   scene = new Scene();
 
   // 2. Cámara
-  camera = new PerspectiveCamera(45, width / height, 0.1, 100);
-  camera.position.set(0, 1.2, 7.5);
+  camera = new PerspectiveCamera(42, width / height, 0.1, 100);
+  camera.position.set(0, 1.2, 7.8);
 
-  // 3. Renderer con DPR limitado a 2
+  // 3. Renderer limpio
   renderer = new WebGLRenderer({
     canvas: canvas,
     alpha: true,
@@ -114,81 +134,82 @@ function setupThree(container, canvas, fallback) {
   renderer.setSize(width, height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  // Grupo principal para parallax y rotación
+  // Grupo principal para parallax
   sceneGroup = new Group();
   scene.add(sceneGroup);
 
-  // 4. Luces
-  const ambientLight = new AmbientLight(0xffffff, 1.2);
+  // 4. Iluminación técnica
+  const ambientLight = new AmbientLight(0xffffff, 1.4);
   scene.add(ambientLight);
 
-  const dirLight = new DirectionalLight(0xffffff, 1.4);
-  dirLight.position.set(5, 10, 7);
+  const dirLight = new DirectionalLight(0xffffff, 1.6);
+  dirLight.position.set(6, 10, 8);
   scene.add(dirLight);
 
-  const accentColor = new Color(getCssVar('--accent', '#c85a32'));
-  const pointLight = new PointLight(accentColor, 2.5, 15);
+  const accentColor = new Color(getCssVar('--accent', '#e2693d'));
+  const pointLight = new PointLight(accentColor, 3, 16);
   pointLight.position.set(0, 0, 2);
   sceneGroup.add(pointLight);
 
-  // 5. Nodo Central (PC Anfitrión con Logo)
+  // 5. Nodo Central (PC Anfitrión con Logo Oficial)
   const textureLoader = new TextureLoader();
   const logoTexture = textureLoader.load(logoUrl, () => {
-    if (fallback) fallback.classList.add('loaded');
-  }, undefined, () => {
-    // Si falla la carga del logo, quitamos fallback de todas formas
-    if (fallback) fallback.classList.add('loaded');
+    // Si la textura se descarga, se mapea correctamente
+    if (centralHostMesh) {
+      centralHostMesh.material.map = logoTexture;
+      centralHostMesh.material.needsUpdate = true;
+    }
   });
 
   const hostGeo = new SphereGeometry(0.85, 32, 32);
   const hostMat = new MeshStandardMaterial({
     map: logoTexture,
-    metalness: 0.2,
+    metalness: 0.35,
     roughness: 0.3,
     color: 0xffffff
   });
   centralHostMesh = new Mesh(hostGeo, hostMat);
   sceneGroup.add(centralHostMesh);
 
-  // Anillos Wi-Fi expansivos
+  // Anillos Wi-Fi expansivos sutiles
   for (let i = 0; i < 3; i++) {
-    const ringGeo = new RingGeometry(0.95, 1.05, 48);
+    const ringGeo = new RingGeometry(0.95, 1.04, 48);
     const ringMat = new MeshBasicMaterial({
       color: accentColor,
       transparent: true,
-      opacity: 0.6 - i * 0.18,
+      opacity: 0.5 - i * 0.15,
       side: 2
     });
     const ringMesh = new Mesh(ringGeo, ringMat);
     ringMesh.rotation.x = Math.PI / 2.3;
-    ringMesh.userData = { scale: 1 + i * 0.45, speed: 0.008 + i * 0.002 };
+    ringMesh.userData = { scale: 1 + i * 0.5, speed: 0.007 + i * 0.002 };
     sceneGroup.add(ringMesh);
     wifiRings.push(ringMesh);
   }
 
-  // 6. Nodos Satélite (Celular, Tablet, Laptop)
+  // 6. Nodos Satélite (Móvil, Tablet, Laptop)
   const nodeConfigs = [
-    { name: 'Móvil', pos: new Vector3(-2.8, 0.8, 0.4), size: [0.35, 0.58, 0.06] },
-    { name: 'Tablet', pos: new Vector3(2.6, 0.9, -0.2), size: [0.55, 0.72, 0.06] },
-    { name: 'Laptop', pos: new Vector3(0.5, -2.1, 0.3), size: [0.75, 0.5, 0.08] }
+    { name: 'Smartphone', pos: new Vector3(-2.8, 0.75, 0.3), size: [0.36, 0.62, 0.06] },
+    { name: 'Tablet', pos: new Vector3(2.6, 0.85, -0.2), size: [0.55, 0.72, 0.06] },
+    { name: 'Laptop', pos: new Vector3(0.4, -2.0, 0.3), size: [0.75, 0.5, 0.08] }
   ];
 
   nodeConfigs.forEach((cfg) => {
     const nodeGeo = new BoxGeometry(cfg.size[0], cfg.size[1], cfg.size[2]);
     const nodeMat = new MeshStandardMaterial({
-      color: new Color(getCssVar('--text-muted', '#666360')),
-      metalness: 0.5,
-      roughness: 0.4
+      color: new Color(getCssVar('--surface-elevated', '#181c24')),
+      metalness: 0.7,
+      roughness: 0.35
     });
     const nodeMesh = new Mesh(nodeGeo, nodeMat);
     nodeMesh.position.copy(cfg.pos);
     sceneGroup.add(nodeMesh);
     satelliteNodes.push(nodeMesh);
 
-    // Curva de conexión en 3D
+    // Curva bezier de conexión tridimensional
     const midPoint = new Vector3(
       cfg.pos.x * 0.5,
-      cfg.pos.y * 0.5 + 0.4,
+      cfg.pos.y * 0.5 + 0.45,
       cfg.pos.z * 0.5 + 0.5
     );
     const curve = new CatmullRomCurve3([
@@ -198,61 +219,67 @@ function setupThree(container, canvas, fallback) {
     ]);
     connectionCurves.push(curve);
 
-    // Tubo visual suave para la curva
-    const tubeGeo = new TubeGeometry(curve, 32, 0.02, 8, false);
+    // Tubo de fibra luminosa para la curva
+    const tubeGeo = new TubeGeometry(curve, 32, 0.018, 8, false);
     const tubeMat = new MeshBasicMaterial({
       color: accentColor,
       transparent: true,
-      opacity: 0.35
+      opacity: 0.3
     });
     const tubeMesh = new Mesh(tubeGeo, tubeMat);
     sceneGroup.add(tubeMesh);
   });
 
-  // 7. Paquetes de datos que viajan por las curvas
+  // 7. Paquetes de datos luminosos (Mezcla aditiva para brillo en oscuro)
   connectionCurves.forEach((curve, idx) => {
-    // Paquete hacia satélite (descarga)
+    // Paquete de subida
     const p1Geo = new SphereGeometry(0.08, 16, 16);
-    const p1Mat = new MeshBasicMaterial({ color: accentColor });
+    const p1Mat = new MeshBasicMaterial({
+      color: accentColor,
+      blending: AdditiveBlending
+    });
     const p1Mesh = new Mesh(p1Geo, p1Mat);
     p1Mesh.userData = { curve, t: (idx * 0.33) % 1, speed: 0.007, direction: 1 };
     sceneGroup.add(p1Mesh);
     packets.push(p1Mesh);
 
-    // Paquete hacia el host (subida)
-    const p2Geo = new BoxGeometry(0.12, 0.12, 0.12);
-    const p2Mat = new MeshBasicMaterial({ color: new Color(0xffffff) });
+    // Paquete de descarga
+    const p2Geo = new BoxGeometry(0.11, 0.11, 0.11);
+    const p2Mat = new MeshBasicMaterial({
+      color: new Color(0xffffff),
+      blending: AdditiveBlending
+    });
     const p2Mesh = new Mesh(p2Geo, p2Mat);
     p2Mesh.userData = { curve, t: (idx * 0.33 + 0.5) % 1, speed: 0.006, direction: -1 };
     sceneGroup.add(p2Mesh);
     packets.push(p2Mesh);
   });
 
-  // 8. Plano QR que se asoma y rota
+  // 8. Plano QR de enlace que rota
   const qrGeo = new PlaneGeometry(0.65, 0.65);
   const qrMat = new MeshBasicMaterial({
     color: accentColor,
     wireframe: true,
     transparent: true,
-    opacity: 0.75
+    opacity: 0.7
   });
   qrPlaneMesh = new Mesh(qrGeo, qrMat);
   qrPlaneMesh.position.set(-1.4, -1.2, 0.8);
   qrPlaneMesh.rotation.z = Math.PI / 12;
   sceneGroup.add(qrPlaneMesh);
 
-  // Eventos de Parallax con el ratón
+  // Parallax con el cursor
   window.addEventListener('mousemove', (e) => {
-    const rect = container.getBoundingClientRect();
-    if (e.clientY >= rect.top && e.clientY <= rect.bottom) {
-      mouseX = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
-      mouseY = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
-      targetRotY = mouseX * 0.25;
-      targetRotX = mouseY * 0.2;
+    const r = container.getBoundingClientRect();
+    if (e.clientY >= r.top && e.clientY <= r.bottom) {
+      mouseX = (e.clientX - r.left - r.width / 2) / (r.width / 2);
+      mouseY = (e.clientY - r.top - r.height / 2) / (r.height / 2);
+      targetRotY = mouseX * 0.22;
+      targetRotX = mouseY * 0.18;
     }
   });
 
-  // Redimensionamiento
+  // Reajuste responsive
   window.addEventListener('resize', () => {
     if (!renderer || !camera || !container) return;
     const w = container.clientWidth;
@@ -262,20 +289,25 @@ function setupThree(container, canvas, fallback) {
     renderer.setSize(w, h);
   });
 
-  // Comprobar preferencia de movimiento reducido
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReduced) {
-    renderer.render(scene, camera);
-    return;
+  // Render inicial
+  renderer.render(scene, camera);
+
+  // Desvanecer el esqueleto SVG inmediatamente tras renderizar el frame 1
+  if (skeleton) {
+    skeleton.classList.add('loaded');
   }
+
+  // Si el usuario prefiere movimiento reducido, dejamos el cuadro estático
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
 
   startLoop();
 }
 
 function updateThemeColors() {
   if (!scene) return;
-  const newAccent = new Color(getCssVar('--accent', '#c85a32'));
-  const newTextMuted = new Color(getCssVar('--text-muted', '#666360'));
+  const newAccent = new Color(getCssVar('--accent', '#e2693d'));
+  const newSurface = new Color(getCssVar('--surface-elevated', '#181c24'));
 
   wifiRings.forEach(r => {
     r.material.color.copy(newAccent);
@@ -290,7 +322,7 @@ function updateThemeColors() {
   }
 
   satelliteNodes.forEach(node => {
-    node.material.color.copy(newTextMuted);
+    node.material.color.copy(newSurface);
   });
 }
 
@@ -313,26 +345,22 @@ function stopLoop() {
 function renderFrame() {
   if (!renderer || !scene || !camera) return;
 
-  // Rotación suave del host
   if (centralHostMesh) {
     centralHostMesh.rotation.y += 0.005;
   }
 
-  // Parallax suave interpolado
   sceneGroup.rotation.y += (targetRotY - sceneGroup.rotation.y) * 0.05;
   sceneGroup.rotation.x += (targetRotX - sceneGroup.rotation.x) * 0.05;
 
-  // Anillos Wi-Fi expansivos
   wifiRings.forEach(ring => {
     ring.userData.scale += ring.userData.speed;
     if (ring.userData.scale > 2.8) {
       ring.userData.scale = 1.0;
     }
     ring.scale.set(ring.userData.scale, ring.userData.scale, 1);
-    ring.material.opacity = Math.max(0, 0.7 * (1 - (ring.userData.scale - 1) / 1.8));
+    ring.material.opacity = Math.max(0, 0.6 * (1 - (ring.userData.scale - 1) / 1.8));
   });
 
-  // Viaje de paquetes por las curvas
   packets.forEach(p => {
     p.userData.t += p.userData.speed * p.userData.direction;
     if (p.userData.t > 1) p.userData.t = 0;
@@ -341,7 +369,6 @@ function renderFrame() {
     p.position.copy(pt);
   });
 
-  // Animación del plano QR
   if (qrPlaneMesh) {
     qrPlaneMesh.rotation.y += 0.01;
   }
@@ -349,7 +376,6 @@ function renderFrame() {
   renderer.render(scene, camera);
 }
 
-// Limpieza completa (dispose)
 export function disposeHeroScene() {
   stopLoop();
   if (scene) {

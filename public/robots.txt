@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nioydev.github.io/NetDrop-Web/sitemap.xml

@@ -3,44 +3,131 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NetDrop - Comparte archivos por red local con código QR</title>
-  <meta name="description" content="Sitio oficial de NetDrop (versiones Python y Rust): comparte fotos, videos y documentos en tu red local escaneando un código QR. Sin internet, sin cables y sin servidores externos.">
+  <title>NetDrop: comparte archivos por red local con código QR</title>
+  <meta name="description" content="Pasa fotos, videos y documentos de tu PC al celular por Wi-Fi escaneando un QR. Sin cables, sin internet y sin cuentas. Gratis para uso no comercial.">
+  <link rel="canonical" href="https://nioydev.github.io/NetDrop-Web/">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="theme-color" content="#0a0c10">
+  <meta name="color-scheme" content="dark">
+
+  <!-- Verificación de Google Search Console (activar cuando se proporcione token) -->
+  <!-- <meta name="google-site-verification" content="TU_TOKEN_AQUI"> -->
+
+  <!-- Open Graph / Redes Sociales -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="NetDrop">
+  <meta property="og:locale" content="es_LA">
+  <meta property="og:url" content="https://nioydev.github.io/NetDrop-Web/">
+  <meta property="og:title" content="NetDrop: comparte archivos por red local con código QR">
+  <meta property="og:description" content="Pasa fotos, videos y documentos de tu PC al celular por Wi-Fi escaneando un QR. Sin cables, sin internet y sin cuentas.">
+  <meta property="og:image" content="https://nioydev.github.io/NetDrop-Web/assets/logo.png">
+  <meta property="og:image:alt" content="Logotipo oficial de NetDrop en red local">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="NetDrop: comparte archivos por red local con código QR">
+  <meta name="twitter:description" content="Pasa fotos, videos y documentos de tu PC al celular por Wi-Fi escaneando un QR. Sin cables, sin internet y sin cuentas.">
+  <meta name="twitter:image" content="https://nioydev.github.io/NetDrop-Web/assets/logo.png">
+
+  <!-- Favicon e Iconos -->
   <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+  <link rel="icon" type="image/png" sizes="192x192" href="./assets/logo.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/logo.png">
+  <link rel="manifest" href="./site.webmanifest">
+
+  <!-- Hojas de Estilos -->
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="./css/animations.css">
+
+  <!-- Datos Estructurados JSON-LD (@graph único válido) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://nioydev.github.io/NetDrop-Web/#website",
+        "url": "https://nioydev.github.io/NetDrop-Web/",
+        "name": "NetDrop",
+        "description": "Sitio oficial de NetDrop: comparte archivos por red local con código QR.",
+        "inLanguage": "es"
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://nioydev.github.io/NetDrop-Web/#webpage",
+        "url": "https://nioydev.github.io/NetDrop-Web/",
+        "name": "NetDrop: comparte archivos por red local con código QR",
+        "isPartOf": { "@id": "https://nioydev.github.io/NetDrop-Web/#website" },
+        "inLanguage": "es"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://nioydev.github.io/NetDrop-Web/#software",
+        "name": "NetDrop",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Windows, Linux",
+        "softwareVersion": "2.1.2",
+        "downloadUrl": "https://github.com/NioyDev/NetDrop/releases/latest",
+        "license": "https://polyformproject.org/licenses/noncommercial/1.0.0/",
+        "isAccessibleForFree": true,
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "Aplicación de transferencia de archivos punto a punto en red local con código QR para Windows y Linux sin internet.",
+        "author": {
+          "@type": "Organization",
+          "name": "NioyDev",
+          "url": "https://github.com/NioyDev",
+          "sameAs": [
+            "https://github.com/NioyDev/NetDrop",
+            "https://github.com/NioyDev/NetDrop-Rust"
+          ]
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
-  <!-- Barra de Navegación -->
+  <!-- Enlace accesible de salto -->
+  <a href="#contenido-principal" class="skip-to-content">Saltar al contenido principal</a>
+
+  <!-- Barra de Navegación Fija -->
   <header class="navbar">
     <div class="container nav-wrapper">
-      <a href="./index.html" class="brand" aria-label="NetDrop Inicio">
-        <img src="./assets/logo.png" alt="NetDrop Logo" class="brand-logo">
+      <a href="#inicio" class="brand" aria-label="Ir a Inicio de NetDrop">
+        <img src="./assets/logo.png" alt="NetDrop Logo" class="brand-logo" width="32" height="32">
         <span>NetDrop</span>
-        <span class="brand-tag">v2.1.2</span>
+        <a href="https://github.com/NioyDev/NetDrop/releases/tag/v2.1.2" target="_blank" rel="noopener noreferrer" class="brand-badge" title="Ver release en GitHub">v2.1.2</a>
       </a>
 
-      <nav aria-label="Navegación principal">
+      <nav aria-label="Navegación por secciones">
         <ul class="nav-links">
-          <li><a href="./index.html" class="nav-link active">Inicio</a></li>
-          <li><a href="./como-funciona.html" class="nav-link">Cómo funciona</a></li>
-          <li><a href="./docs.html" class="nav-link">Documentación</a></li>
+          <li><a href="#inicio" class="nav-link active">Inicio</a></li>
+          <li><a href="#como-funciona" class="nav-link">Cómo funciona</a></li>
+          <li><a href="#funciones" class="nav-link">Funciones</a></li>
+          <li><a href="#versiones" class="nav-link">Versiones</a></li>
           <li><a href="#descargas" class="nav-link">Descargas</a></li>
+          <li><a href="#documentacion" class="nav-link">Documentación</a></li>
+          <li><a href="#faq" class="nav-link">FAQ</a></li>
         </ul>
       </nav>
 
       <div class="nav-actions">
-        <!-- Selector de Temas -->
+        <!-- Selector de Temas Discreto -->
         <div class="theme-selector-wrap">
           <button type="button" id="theme-menu-btn" class="theme-btn" aria-label="Cambiar tema de color" aria-expanded="false">
             <span class="theme-color-preview"></span>
-            <span class="theme-btn-name">Cálido Terracota</span>
-            <span aria-hidden="true">▾</span>
+            <span>Tema</span>
           </button>
           <div id="theme-dropdown" class="theme-dropdown" role="menu"></div>
         </div>
 
-        <a href="https://github.com/NioyDev/NetDrop" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" aria-label="Repositorio GitHub de NetDrop">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <!-- Enlace a GitHub Oficial -->
+        <a href="https://github.com/NioyDev/NetDrop" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding: 0.45rem 0.85rem; font-size: 0.84rem;" aria-label="Repositorio de NetDrop en GitHub">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
           </svg>
           <span>GitHub</span>
@@ -49,277 +136,638 @@
     </div>
   </header>
 
-  <!-- Hero Principal -->
-  <main>
-    <section class="hero-section">
-      <div class="container hero-grid">
-        <div class="hero-content">
-          <div class="hero-badge">
-            <span class="pulse-dot"></span>
-            <span>Versión 2.1.2 Disponible • Rediseño Editorial</span>
+  <main id="contenido-principal">
+    <!-- ====================================================================
+         1. HERO SECTION (#inicio)
+         ==================================================================== -->
+    <section id="inicio" class="hero-section">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <a href="https://github.com/NioyDev/NetDrop/releases/tag/v2.1.2" target="_blank" rel="noopener noreferrer" class="hero-version-pill">
+              <span class="pulse-dot"></span>
+              <span>NetDrop v2.1.2 Disponible • Notas de la versión</span>
+            </a>
+
+            <h1 class="hero-title">
+              Comparte archivos entre tu PC y tu celular por red local
+            </h1>
+
+            <p class="hero-subtitle">
+              Escanea un código QR desde tu teléfono y transfiere fotos, videos y documentos a través de tu Wi-Fi sin internet, sin cables y sin servidores externos.
+            </p>
+
+            <div class="hero-actions">
+              <!-- Botón inteligente con detección de SO -->
+              <a href="#descargas" class="btn btn-primary" id="hero-download-cta">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span id="hero-download-label">Descargar para Windows (.exe)</span>
+              </a>
+
+              <a href="#como-funciona" class="btn btn-secondary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                </svg>
+                <span>Cómo funciona</span>
+              </a>
+            </div>
+
+            <!-- Bloque Terminal de Comandos -->
+            <div class="terminal-card">
+              <div class="terminal-header">
+                <div class="terminal-tabs">
+                  <button type="button" class="terminal-tab-btn active" data-lang="python">Python (v2.1.2)</button>
+                  <button type="button" class="terminal-tab-btn" data-lang="rust">Rust (En desarrollo)</button>
+                </div>
+                <button type="button" class="terminal-copy-btn" title="Copiar comandos al portapapeles">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  <span>Copiar</span>
+                </button>
+              </div>
+              <pre class="terminal-body"><code class="terminal-code-text">git clone https://github.com/NioyDev/NetDrop.git
+cd NetDrop && pip install -r requirements.txt
+python app.py</code></pre>
+            </div>
           </div>
 
-          <h1 class="hero-title">
-            Pasa archivos de tu PC al celular <span class="highlight">sin cables ni apps</span>
-          </h1>
-
-          <p class="hero-subtitle">
-            Escanea un código QR y comparte fotos, videos, audios y documentos a la máxima velocidad de tu red Wi-Fi local. Sin internet, sin cuentas y con privacidad total.
-          </p>
-
-          <div class="hero-actions">
-            <a href="#descargas" class="btn btn-primary">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
+          <!-- Escena 3D Three.js con espacio reservado (CLS = 0) -->
+          <div class="hero-scene-container" id="hero-scene-container">
+            <!-- Esqueleto SVG sin texto de carga -->
+            <div class="hero-skeleton">
+              <svg class="skeleton-svg" viewBox="0 0 400 280" role="img" aria-label="Ilustración esquemática de la red local">
+                <circle cx="200" cy="140" r="38" fill="var(--surface-elevated)" stroke="var(--border-hover)" stroke-width="2" />
+                <circle cx="200" cy="140" r="16" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.5" />
+                <path d="M 200 140 L 90 85 M 200 140 L 310 85 M 200 140 L 200 230" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="4,4" />
+                <circle cx="90" cy="85" r="20" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5" />
+                <circle cx="310" cy="85" r="20" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5" />
+                <circle cx="200" cy="230" r="20" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5" />
               </svg>
-              <span>Descargar NetDrop</span>
-            </a>
-            <a href="./como-funciona.html" class="btn btn-secondary">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polygon points="10 8 16 12 10 16 10 8"></polygon>
-              </svg>
-              <span>Ver cómo funciona</span>
-            </a>
-          </div>
-
-          <div class="hero-highlights">
-            <div class="highlight-item">
-              <span class="highlight-number">100%</span>
-              <span class="highlight-label">Red Local (Sin Internet)</span>
             </div>
-            <div class="highlight-item">
-              <span class="highlight-number">2 MB</span>
-              <span class="highlight-label">Fragmentación en Chunks</span>
-            </div>
-            <div class="highlight-item">
-              <span class="highlight-number">2s</span>
-              <span class="highlight-label">Sincronización en Vivo</span>
-            </div>
+            <canvas id="hero-canvas"></canvas>
           </div>
         </div>
 
-        <!-- Escena three.js Hero -->
-        <div class="hero-scene-container" id="hero-scene-container">
-          <!-- Fallback visual inmediato -->
-          <div class="hero-fallback">
-            <svg class="fallback-network-svg" viewBox="0 0 400 300" role="img" aria-label="Red local NetDrop">
-              <circle cx="200" cy="150" r="42" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="3" />
-              <circle cx="200" cy="150" r="18" fill="var(--accent)" />
-              <path d="M 200 150 L 90 90 M 200 150 L 310 90 M 200 150 L 200 240" stroke="var(--border-hover)" stroke-width="2" stroke-dasharray="4,4" />
-              <circle cx="90" cy="90" r="22" fill="var(--surface)" stroke="var(--border)" stroke-width="2" />
-              <circle cx="310" cy="90" r="22" fill="var(--surface)" stroke="var(--border)" stroke-width="2" />
-              <circle cx="200" cy="240" r="22" fill="var(--surface)" stroke="var(--border)" stroke-width="2" />
-            </svg>
-            <p style="font-size: 0.9rem; font-weight: 600; color: var(--text-heading);">Red Local NetDrop 3D</p>
-            <p style="font-size: 0.8rem; color: var(--text-muted);">Cargando visualización interactiva...</p>
+        <!-- Franja de Datos Reales de Ingeniería -->
+        <div class="metrics-strip">
+          <div class="metric-card">
+            <div class="metric-value">100% LAN</div>
+            <div class="metric-title">Aislamiento Local</div>
+            <p class="metric-desc">Tus archivos nunca tocan servidores externos ni internet. La comunicación ocurre estrictamente entre tu PC y tu teléfono.</p>
           </div>
 
-          <canvas id="hero-canvas"></canvas>
-          <div class="scene-overlay-badge">three.js • Red Local 3D</div>
+          <div class="metric-card">
+            <div class="metric-value">2 MB</div>
+            <div class="metric-title">Fragmentación por Chunks</div>
+            <p class="metric-desc">El navegador móvil envía los archivos pesados en bloques de 2 MB con liberación continua de RAM, evitando bloqueos por memoria.</p>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-value">2 s</div>
+            <div class="metric-title">Sondeo de Sincronización</div>
+            <p class="metric-desc">Live Sync consulta el catálogo cada 2 segundos. Cualquier archivo subido aparece en todas las pantallas sin recargar la página.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Sección de Descargas -->
-    <section class="section-downloads" id="descargas">
+    <!-- ====================================================================
+         2. CÓMO FUNCIONA (#como-funciona)
+         ==================================================================== -->
+    <section id="como-funciona" class="page-section">
       <div class="container">
         <div class="section-header">
-          <span class="section-tag">Descargas Oficiales</span>
-          <h2 class="section-title">Elige tu versión de NetDrop</h2>
+          <span class="section-tag">Flujo del Sistema</span>
+          <h2 class="section-title">Cómo funciona NetDrop paso a paso</h2>
           <p class="section-description">
-            Descarga la versión estable en Python o conoce la versión de última generación que estamos desarrollando en Rust.
+            Comportamiento técnico real de una transferencia: desde el enlace en el puerto 5000 hasta el ensamblado final en disco.
           </p>
         </div>
 
-        <div class="downloads-grid">
-          <!-- Tarjeta Python v2.1.2 (Estable) -->
-          <article class="download-card primary-release">
-            <span class="card-badge badge-stable">Estable • v2.1.2</span>
-            
-            <div class="card-header">
-              <div class="card-icon" style="color: #3776ab;">🐍</div>
-              <div class="card-title-group">
-                <h3>NetDrop Python</h3>
-                <span class="card-version">Release v2.1.2 (Flask + Waitress)</span>
-              </div>
+        <!-- Reproductor Interactivo SVG de los 7 Pasos -->
+        <div class="interactive-player" id="interactive-player">
+          <nav class="player-stepper" aria-label="Selector de los 7 pasos técnicos"></nav>
+          <div class="player-viewport" role="region" aria-live="polite"></div>
+          <div class="player-controls">
+            <div class="control-buttons">
+              <button type="button" class="control-btn btn-prev" title="Paso anterior" aria-label="Paso anterior">◀</button>
+              <button type="button" class="control-btn btn-play-pause" title="Pausar o reproducir" aria-label="Pausar o reproducir">⏸</button>
+              <button type="button" class="control-btn btn-next" title="Paso siguiente" aria-label="Paso siguiente">▶</button>
             </div>
-
-            <p class="card-desc">
-              Versión estable y lista para usar. Incluye servidor web local integrado, interfaz de escritorio nativa, motor de 5 temas en JSON, subida fragmentada de 2 MB y visor multimedia en vivo.
-            </p>
-
-            <div class="binary-buttons-grid">
-              <!-- Windows Setup -->
-              <a href="https://github.com/NioyDev/NetDrop/releases/download/v2.1.2/NetDrop-Setup.exe" class="btn-binary" download>
-                <span class="btn-binary-title">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.901-1.799"/></svg>
-                  Windows Setup (.exe)
-                </span>
-                <span class="btn-binary-info">Instalador asistido completo</span>
-              </a>
-
-              <!-- Windows Portable Debug -->
-              <a href="https://github.com/NioyDev/NetDrop/releases/download/v2.1.2/NetDrop.-.Version.Portable.Debug.exe" class="btn-binary" download>
-                <span class="btn-binary-title">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.901-1.799"/></svg>
-                  Windows Portable (.exe)
-                </span>
-                <span class="btn-binary-info">Debug / Monitoreo en vivo</span>
-              </a>
-
-              <!-- Linux Zip -->
-              <a href="https://github.com/NioyDev/NetDrop/releases/download/v2.1.2/NetDrop-Linux-x64.zip" class="btn-binary" download>
-                <span class="btn-binary-title">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.001 2c-5.523 0-10 4.477-10 10 0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12.001 2z"/></svg>
-                  Linux Portable (.zip)
-                </span>
-                <span class="btn-binary-info">Binario x64 sin dependencias</span>
-              </a>
-
-              <!-- Linux Deb -->
-              <a href="https://github.com/NioyDev/NetDrop/releases/download/v2.1.2/netdrop-installer.deb" class="btn-binary" download>
-                <span class="btn-binary-title">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
-                  Debian / Ubuntu (.deb)
-                </span>
-                <span class="btn-binary-info">Paquete nativo .deb</span>
-              </a>
+            <div class="step-info-text">
+              <div class="step-info-title">Cargando paso...</div>
+              <p class="step-info-desc"></p>
             </div>
-          </article>
-
-          <!-- Tarjeta Rust (En desarrollo / Próximamente) -->
-          <article class="download-card">
-            <span class="card-badge badge-soon">Próximamente</span>
-
-            <div class="card-header">
-              <div class="card-icon" style="color: #dea584;">🦀</div>
-              <div class="card-title-group">
-                <h3>NetDrop-Rust</h3>
-                <span class="card-version">En Desarrollo Activo (Axum + Tokio)</span>
-              </div>
-            </div>
-
-            <p class="card-desc">
-              Reescritura completa desde cero en Rust con programación asíncrona. Diseñado para un consumo mínimo de RAM, streaming directo sin intermediarios y transferencias a velocidad de gigabit.
-            </p>
-
-            <div class="rust-soon-box">
-              <div class="rust-soon-title">Releases en preparación</div>
-              <p class="rust-soon-text">
-                El repositorio está en desarrollo activo. Los binarios para Windows, Linux y macOS se publicarán próximamente en GitHub Releases.
-              </p>
-              <div style="margin-top: 1rem;">
-                <a href="https://github.com/NioyDev/NetDrop-Rust" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
-                  Seguir desarrollo en GitHub
-                </a>
-              </div>
-            </div>
-          </article>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Características -->
-    <section class="section-features">
+    <!-- ====================================================================
+         3. FUNCIONES (#funciones)
+         ==================================================================== -->
+    <section id="funciones" class="page-section">
       <div class="container">
         <div class="section-header">
-          <span class="section-tag">Ventajas</span>
-          <h2 class="section-title">Diseñado para la velocidad y privacidad</h2>
+          <span class="section-tag">Capacidades</span>
+          <h2 class="section-title">Características técnicas clave</h2>
           <p class="section-description">
-            Sin suscripciones, sin almacenar tus archivos en servidores ajenos y sin depender de cables USB.
+            Diseñado para resolver la transferencia diaria de archivos sin cables ni intermediarios en la nube.
           </p>
         </div>
 
         <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon-wrap">📱</div>
+          <article class="feature-box">
+            <div class="feature-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            </div>
             <h3>Código QR Instantáneo</h3>
-            <p>Conéctate al instante apuntando la cámara de tu celular al monitor. Sin tener que escribir direcciones IP ni configurar puertos a mano.</p>
-          </div>
+            <p>Detección automática de la IP privada en tu adaptador de red y renderizado de un código QR listo para escanear con la cámara del celular.</p>
+          </article>
 
-          <div class="feature-card">
-            <div class="feature-icon-wrap">⚡</div>
-            <h3>Sincronización en Vivo</h3>
-            <p>Sondeo inteligente cada 2 segundos. Cualquier foto o video subido desde tu teléfono aparece automáticamente en la PC sin recargar.</p>
-          </div>
+          <article class="feature-box">
+            <div class="feature-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            </div>
+            <h3>Sincronización en Vivo (2 s)</h3>
+            <p>Sondeo inteligente a intervalos regulares. Las tarjetas se actualizan automáticamente en todos los clientes conectados sin parpadeos.</p>
+          </article>
 
-          <div class="feature-card">
-            <div class="feature-icon-wrap">🧩</div>
+          <article class="feature-box">
+            <div class="feature-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            </div>
             <h3>Subida en Chunks de 2 MB</h3>
-            <p>Los archivos pesados se dividen en fragmentos con liberación activa de memoria, evitando cierres inesperados (OOM) en dispositivos móviles.</p>
+            <p>Fragmentación secuencial de archivos pesados en el cliente. Ensamblado temporal seguro y movimiento atómico en disco.</p>
+          </article>
+
+          <article class="feature-box">
+            <div class="feature-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path><path d="m14.83 14.83 4.24 4.24"></path><path d="m9.17 14.83-4.24 4.24"></path></svg>
+            </div>
+            <h3>Motor de 5 Temas en JSON</h3>
+            <p>Personalización de la interfaz web mediante variables CSS gobernadas por JSON: Cálido, Oscuro Minimal, Bosque, Noche y Nórdico.</p>
+          </article>
+
+          <article class="feature-box">
+            <div class="feature-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </div>
+            <h3>Privacidad Punto a Punto</h3>
+            <p>Sin cuentas, sin almacenamiento remoto y con soporte para cifrado TLS/HTTPS si se agregan certificados locales en la raíz.</p>
+          </article>
+
+          <article class="feature-box">
+            <div class="feature-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </div>
+            <h3>Visor Multimedia Integrado</h3>
+            <p>Previsualización inline de imágenes, reproducción de audio y video, y lectura de código o texto directamente en el navegador.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         4. VERSIONES: PYTHON Y RUST (#versiones)
+         ==================================================================== -->
+    <section id="versiones" class="page-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Ingeniería</span>
+          <h2 class="section-title">Dos versiones, un mismo propósito</h2>
+          <p class="section-description">
+            NetDrop evoluciona desde su arquitectura estable en Python hacia una versión asíncrona de alto rendimiento en Rust.
+          </p>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="tech-table">
+            <thead>
+              <tr>
+                <th scope="col">Métrica / Capacidad</th>
+                <th scope="col">NetDrop (Python) <span class="table-tag tag-python">v2.1.2 Estable</span></th>
+                <th scope="col">NetDropRS (Rust) <span class="table-tag tag-rust">En Desarrollo</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Pila Tecnológica</strong></td>
+                <td>Flask (Werkzeug) en subproceso daemon + Pywebview nativo</td>
+                <td>Axum + Tokio + motor de plantillas Tera con assets embebidos</td>
+              </tr>
+              <tr>
+                <td><strong>Consumo de RAM en reposo</strong></td>
+                <td>~65 – 90 MB</td>
+                <td><strong>~8 – 14 MB</strong> (reducción de memoria de ~85%)</td>
+              </tr>
+              <tr>
+                <td><strong>Tiempo de arranque en frío</strong></td>
+                <td>~1.8 – 2.5 s</td>
+                <td><strong>&lt; 25 ms</strong> (arranque ~80x más rápido)</td>
+              </tr>
+              <tr>
+                <td><strong>Tamaño del paquete ejecutable</strong></td>
+                <td>~45 – 70 MB (empaquetado con PyInstaller)</td>
+                <td><strong>~15 – 22 MB</strong> (binario nativo autocontenido)</td>
+              </tr>
+              <tr>
+                <td><strong>Estrategia de subida de archivos</strong></td>
+                <td>División en fragmentos de 2 MB en el cliente</td>
+                <td>Streaming asíncrono directo a disco con chunks de 1 MB</td>
+              </tr>
+              <tr>
+                <td><strong>Descarga de archivos (HTTP)</strong></td>
+                <td>Servido síncrono por bloques estándar</td>
+                <td>ReaderStream asíncrono con soporte de HTTP Range</td>
+              </tr>
+              <tr>
+                <td><strong>Plataformas Soportadas</strong></td>
+                <td>Windows y Linux</td>
+                <td>Windows y Linux</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         5. DESCARGAS OFICIALES (#descargas)
+         ==================================================================== -->
+    <section id="descargas" class="page-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Instaladores</span>
+          <h2 class="section-title">Descargas oficiales de NetDrop</h2>
+          <p class="section-description">
+            Descarga la release estable en Python o sigue el progreso de la versión en Rust.
+          </p>
+        </div>
+
+        <div class="downloads-panel-wrapper">
+          <!-- Pestañas Python / Rust en el HTML inicial -->
+          <div class="downloads-nav-tabs" role="tablist">
+            <button type="button" class="dl-tab-btn active" data-target="tab-python" role="tab" aria-selected="true">
+              <span class="table-tag tag-python">Python</span>
+              <span>NetDrop v2.1.2 (Estable)</span>
+            </button>
+            <button type="button" class="dl-tab-btn" data-target="tab-rust" role="tab" aria-selected="false">
+              <span class="table-tag tag-rust">Rust</span>
+              <span>NetDropRS (En desarrollo)</span>
+            </button>
           </div>
 
-          <div class="feature-card">
-            <div class="feature-icon-wrap">🎨</div>
-            <h3>5 Temas en JSON</h3>
-            <p>Personaliza la interfaz a tu gusto: Cálido Terracota, Oscuro Minimal, Bosque Verde, Noche Ámbar o Nórdico Frío con persistencia local.</p>
+          <!-- Panel Python v2.1.2 -->
+          <div id="tab-python" class="dl-tab-content active" role="tabpanel">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+              <div>
+                <h3 style="font-size: 1.4rem; margin-bottom: 0.3rem;">NetDrop Python v2.1.2</h3>
+                <p style="font-size: 0.92rem; color: var(--text-muted);">Servidor HTTP local integrado con ventana gráfica nativa para Windows y Linux.</p>
+              </div>
+              <a href="https://github.com/NioyDev/NetDrop/releases/tag/v2.1.2" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.45rem 0.9rem;">
+                Ver notas de la release v2.1.2 ↗
+              </a>
+            </div>
+
+            <div class="table-wrapper" style="margin-top: 0;">
+              <table class="tech-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Plataforma / Paquete</th>
+                    <th scope="col">Formato</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Enlace Directo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Windows Instalador</strong></td>
+                    <td><code>.exe</code></td>
+                    <td>Asistente asistido de instalación completo con accesos directos</td>
+                    <td><a href="https://github.com/NioyDev/NetDrop/releases/latest/download/NetDrop-Setup.exe" class="btn btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.82rem;" download>Descargar .exe</a></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Windows Portable Debug</strong></td>
+                    <td><code>.exe</code></td>
+                    <td>Ejecutable portátil de un solo archivo que muestra consola de monitoreo</td>
+                    <td><a href="https://github.com/NioyDev/NetDrop/releases/latest/download/NetDrop.-.Version.Portable.Debug.exe" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.82rem;" download>Descargar Portable</a></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Linux x64 Portátil</strong></td>
+                    <td><code>.zip</code></td>
+                    <td>Binario empaquetado para cualquier distribución Linux de 64 bits</td>
+                    <td><a href="https://github.com/NioyDev/NetDrop/releases/latest/download/NetDrop-Linux-x64.zip" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.82rem;" download>Descargar .zip</a></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Debian / Ubuntu</strong></td>
+                    <td><code>.deb</code></td>
+                    <td>Paquete nativo para distribuciones basadas en Debian (Mint, Ubuntu)</td>
+                    <td><a href="https://github.com/NioyDev/NetDrop/releases/latest/download/netdrop-installer.deb" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.82rem;" download>Descargar .deb</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Aviso sobre Windows SmartScreen -->
+            <div class="smartscreen-alert">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <div>
+                <strong>Aviso de seguridad para Windows:</strong> Dado que NetDrop es un proyecto de código abierto independiente sin certificado digital corporativo de pago, Windows Defender SmartScreen puede advertir <em>"Windows protegió su PC"</em>. Haz clic en <strong>"Más información"</strong> y luego en <strong>"Ejecutar de todas formas"</strong> para iniciar la aplicación.
+              </div>
+            </div>
           </div>
 
-          <div class="feature-card">
-            <div class="feature-icon-wrap">🔒</div>
-            <h3>100% Red Local</h3>
-            <p>Tus fotos y documentos nunca viajan a internet. La transferencia ocurre directamente punto a punto entre tus equipos dentro de tu hogar u oficina.</p>
+          <!-- Panel Rust (En desarrollo) -->
+          <div id="tab-rust" class="dl-tab-content" role="tabpanel">
+            <div style="margin-bottom: 1.5rem;">
+              <h3 style="font-size: 1.4rem; margin-bottom: 0.3rem;">NetDropRS (Rust)</h3>
+              <p style="font-size: 0.92rem; color: var(--text-muted);">Reescritura completa en Rust con Axum, Tokio y WebView nativo.</p>
+            </div>
+
+            <div style="background: var(--surface-elevated); border: 1px dashed var(--border); border-radius: var(--radius-md); padding: 2rem; text-align: center;">
+              <h4 style="font-size: 1.15rem; margin-bottom: 0.6rem;">Binarios precompilados próximamente</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted); max-width: 560px; margin: 0 auto 1.5rem;">
+                El repositorio se encuentra en pleno desarrollo activo. Puedes compilar el proyecto directamente desde el código fuente con Cargo:
+              </p>
+              <div class="terminal-card" style="margin: 0 auto 1.5rem; max-width: 480px; text-align: left;">
+                <pre class="terminal-body"><code>git clone https://github.com/NioyDev/NetDrop-Rust.git
+cd NetDrop-Rust
+cargo build --release --features desktop</code></pre>
+              </div>
+              <a href="https://github.com/NioyDev/NetDrop-Rust" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                Ver repositorio de NetDrop-Rust ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         6. DOCUMENTACIÓN TÉCNICA (#documentacion)
+         ==================================================================== -->
+    <section id="documentacion" class="page-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Manual Técnico</span>
+          <h2 class="section-title">Documentación técnica de NetDrop</h2>
+          <p class="section-description">
+            Guía de instalación, arquitectura, catálogo de endpoints de la API y solución de problemas de red.
+          </p>
+        </div>
+
+        <nav class="docs-subnav" aria-label="Subsecciones de la documentación">
+          <a href="#instalacion" class="docs-sublink">1. Instalación</a>
+          <a href="#uso" class="docs-sublink">2. Conexión QR</a>
+          <a href="#api" class="docs-sublink">3. Endpoints de la API</a>
+          <a href="#problemas" class="docs-sublink">4. Firewall y Puerto 5000</a>
+        </nav>
+
+        <!-- Subsección Instalación -->
+        <article id="instalacion" class="doc-block">
+          <h3>Instalación en Windows y Linux</h3>
+          <p>
+            NetDrop se distribuye como binario autocontenido. No requiere que instales Python, Node.js ni paquetes externos en tu computadora:
+          </p>
+          <ul style="margin: 1rem 0 1rem 1.5rem; color: var(--text-muted); line-height: 1.7;">
+            <li><strong>Windows:</strong> Descarga <code>NetDrop-Setup.exe</code> para instalarlo en el menú de inicio o <code>NetDrop.exe</code> si prefieres llevarlo en una memoria USB.</li>
+            <li><strong>Debian / Ubuntu / Mint:</strong> Instala con <code>sudo dpkg -i netdrop-installer.deb</code>.</li>
+            <li><strong>Linux Genérico (x64):</strong> Extrae <code>NetDrop-Linux-x64.zip</code> y dale permisos de ejecución: <code>chmod +x NetDrop && ./NetDrop</code>.</li>
+          </ul>
+        </article>
+
+        <!-- Subsección Uso -->
+        <article id="uso" class="doc-block">
+          <h3>Guía de Uso y Conexión por Código QR</h3>
+          <p>
+            Al iniciar NetDrop en tu PC, se despliega una ventana nativa con la dirección IP asignada y el código QR central. Para conectarte:
+          </p>
+          <ol style="margin: 1rem 0 1rem 1.5rem; color: var(--text-muted); line-height: 1.7;">
+            <li>Verifica que tu teléfono y tu computadora estén conectados a la <strong>misma red Wi-Fi</strong>.</li>
+            <li>Abre la aplicación de cámara de tu celular y apunta al código QR generado en el monitor.</li>
+            <li>Toca el enlace sugerido en pantalla (por ejemplo, <code>http://192.168.1.15:5000</code>).</li>
+            <li>¡Listo! Ya puedes arrastrar archivos para enviar o tocar sobre cualquier tarjeta disponible para descargar.</li>
+          </ol>
+        </article>
+
+        <!-- Subsección API -->
+        <article id="api" class="doc-block">
+          <h3>Especificación de Endpoints y API REST Local</h3>
+          <p>
+            NetDrop expone un conjunto de endpoints HTTP locales que coordinan la sincronización y la transferencia de fragmentos:
+          </p>
+          <div class="table-wrapper">
+            <table class="tech-table">
+              <thead>
+                <tr>
+                  <th scope="col">Método</th>
+                  <th scope="col">Ruta</th>
+                  <th scope="col">Descripción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>GET</code></td>
+                  <td><code>/</code></td>
+                  <td>Página de inicio con listado de archivos compartidos y dropzone.</td>
+                </tr>
+                <tr>
+                  <td><code>GET</code></td>
+                  <td><code>/settings</code></td>
+                  <td>Panel de configuración de temas, sonido de notificación y modo background.</td>
+                </tr>
+                <tr>
+                  <td><code>GET</code></td>
+                  <td><code>/qr-image</code></td>
+                  <td>Entrega el gráfico PNG del código QR generado dinámicamente con el logo central.</td>
+                </tr>
+                <tr>
+                  <td><code>GET</code></td>
+                  <td><code>/api/sync-status</code></td>
+                  <td>Devuelve JSON con conteo de archivos y marca de tiempo (<code>latest_mtime</code>) para Live Sync.</td>
+                </tr>
+                <tr>
+                  <td><code>POST</code></td>
+                  <td><code>/upload-chunk</code></td>
+                  <td>Recibe fragmentos binarios (2 MB en Python, 1 MB en Rust) para subidas continuas.</td>
+                </tr>
+                <tr>
+                  <td><code>GET</code></td>
+                  <td><code>/archivo/&lt;nombre&gt;</code></td>
+                  <td>Vista previa en el visor (lightbox) con cabecera <code>Content-Disposition: inline</code>.</td>
+                </tr>
+                <tr>
+                  <td><code>GET</code></td>
+                  <td><code>/descarga/&lt;nombre&gt;</code></td>
+                  <td>Descarga forzada del archivo al almacenamiento local del dispositivo.</td>
+                </tr>
+                <tr>
+                  <td><code>POST</code></td>
+                  <td><code>/eliminar/&lt;nombre&gt;</code></td>
+                  <td>Elimina el archivo del almacenamiento de la computadora y propaga la salida a los clientes.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <!-- Subsección Problemas -->
+        <article id="problemas" class="doc-block">
+          <h3>Solución de Problemas: Firewall y Puerto 5000</h3>
+          <p>
+            Si el celular no logra abrir la página tras escanear el código QR, verifica los dos escenarios más habituales:
+          </p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem;">
+              <h4 style="margin-bottom: 0.5rem; font-size: 1rem;">Regla de Firewall (Puerto 5000)</h4>
+              <p style="font-size: 0.88rem;">En Windows, asegúrate de que el Firewall permita el tráfico en redes privadas. En Linux con UFW puedes habilitarlo con:</p>
+              <pre style="background: var(--surface-elevated); padding: 0.6rem; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.8rem; margin-top: 0.5rem;">sudo ufw allow 5000/tcp</pre>
+            </div>
+
+            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem;">
+              <h4 style="margin-bottom: 0.5rem; font-size: 1rem;">Aislamiento Wi-Fi (AP Isolation)</h4>
+              <p style="font-size: 0.88rem;">En redes públicas, universitarias o de hoteles, los routers suelen aislar los dispositivos entre sí. Si este es tu caso, enciende la <strong>Zona Wi-Fi portátil (Hotspot)</strong> de tu móvil o PC y conecta ambos equipos a ella.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         7. PREGUNTAS FRECUENTES (#faq)
+         ==================================================================== -->
+    <section id="faq" class="page-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Resolución de Dudas</span>
+          <h2 class="section-title">Preguntas frecuentes</h2>
+          <p class="section-description">
+            Respuestas directas a las inquietudes más comunes sobre privacidad, rendimiento y compatibilidad.
+          </p>
+        </div>
+
+        <div class="faq-list">
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>¿Necesita conexión a internet para funcionar?</span>
+              <span aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer" style="display: none;">
+              No. NetDrop opera íntegramente dentro de tu red local (LAN o Wi-Fi). Puedes desconectar el cable de tu proveedor de internet o apagar los datos móviles del celular y las transferencias seguirán funcionando a máxima velocidad local.
+            </div>
           </div>
 
-          <div class="feature-card">
-            <div class="feature-icon-wrap">👁️</div>
-            <h3>Vista Previa Integrada</h3>
-            <p>Lightbox multimedia incorporado para reproducir videos, audios, inspeccionar imágenes o leer documentos antes de descargarlos.</p>
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>¿Puedo transferir archivos pesados de varios gigabytes?</span>
+              <span aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer" style="display: none;">
+              Sí. Gracias al sistema de subida en fragmentos (chunks de 2 MB en Python y 1 MB en Rust), el archivo se divide en el navegador del teléfono y se ensambla de forma atómica en el disco de la PC, evitando que los teléfonos con poca memoria RAM sufran cierres de navegador (OOM).
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>¿Dónde se almacenan los archivos recibidos en la computadora?</span>
+              <span aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer" style="display: none;">
+              Los archivos recibidos se guardan en la carpeta local de la aplicación (generalmente en tu directorio de usuario o dentro de la carpeta persistente <code>Files/</code>). Puedes acceder a ellos directamente desde el explorador de archivos de tu sistema operativo.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>¿Por qué la versión Rust solo contempla Windows y Linux?</span>
+              <span aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer" style="display: none;">
+              Actualmente los desarrolladores oficiales mantienen entornos de integración continua y empaquetado nativo (Inno Setup y lanzador desktop) exclusivamente para Windows y Linux. El repositorio no ofrece binarios precompilados para macOS.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>¿Qué licencia tiene NetDrop?</span>
+              <span aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer" style="display: none;">
+              Tanto NetDrop (Python) como NetDrop-Rust y NetDrop-Web están licenciados bajo los términos de la licencia <strong>PolyForm Noncommercial 1.0.0</strong>. Su uso, modificación y distribución es completamente gratuito para fines personales y no comerciales.
+            </div>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Footer -->
+  <!-- ====================================================================
+       FOOTER
+       ==================================================================== -->
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="brand">
-            <img src="./assets/logo.png" alt="NetDrop Logo" class="brand-logo">
+            <img src="./assets/logo.png" alt="NetDrop Logo" class="brand-logo" width="32" height="32">
             <span>NetDrop</span>
           </div>
           <p>
-            Comparte fotos, música y documentos de tu PC a tus dispositivos móviles sin cables ni aplicaciones adicionales.
+            Herramienta libre y local para compartir fotos, videos y documentos entre PC y celulares escaneando un código QR. Sin intermediarios, sin cables y con privacidad total.
           </p>
         </div>
 
         <div class="footer-col">
-          <h4>Navegación</h4>
+          <h4>Secciones</h4>
           <ul>
-            <li><a href="./index.html">Inicio</a></li>
-            <li><a href="./como-funciona.html">Cómo funciona</a></li>
-            <li><a href="./docs.html">Documentación</a></li>
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#como-funciona">Cómo funciona</a></li>
+            <li><a href="#funciones">Funciones</a></li>
+            <li><a href="#versiones">Versiones Python y Rust</a></li>
             <li><a href="#descargas">Descargas oficiales</a></li>
+            <li><a href="#documentacion">Documentación</a></li>
+            <li><a href="#faq">Preguntas frecuentes</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h4>Proyectos</h4>
+          <h4>Repositorios Oficiales</h4>
           <ul>
-            <li><a href="https://github.com/NioyDev/NetDrop" target="_blank" rel="noopener noreferrer">NetDrop (Python)</a></li>
-            <li><a href="https://github.com/NioyDev/NetDrop-Rust" target="_blank" rel="noopener noreferrer">NetDrop-Rust</a></li>
-            <li><a href="https://github.com/NioyDev/NetDrop-Web" target="_blank" rel="noopener noreferrer">NetDrop-Web (Sitio)</a></li>
+            <li><a href="https://github.com/NioyDev/NetDrop" target="_blank" rel="noopener noreferrer">NetDrop (Python) ↗</a></li>
+            <li><a href="https://github.com/NioyDev/NetDrop-Rust" target="_blank" rel="noopener noreferrer">NetDrop-Rust ↗</a></li>
+            <li><a href="https://github.com/NioyDev/NetDrop-Web" target="_blank" rel="noopener noreferrer">NetDrop-Web (Sitio) ↗</a></li>
+            <li><a href="https://polyformproject.org/licenses/noncommercial/1.0.0/" target="_blank" rel="noopener noreferrer">Licencia PolyForm ↗</a></li>
           </ul>
         </div>
       </div>
 
       <div class="footer-bottom">
         <span>© 2026 NioyDev. Licencia PolyForm Noncommercial 1.0.0.</span>
-        <span>Hecho con HTML, CSS, JavaScript y three.js</span>
+        <span>Página única optimizada para Google • Cero dependencias externas</span>
       </div>
     </div>
   </footer>
 
   <!-- Scripts -->
   <script type="module" src="./js/main.js"></script>
+  <script type="module" src="./js/animations.js"></script>
   <script type="module">
     import { initHeroScene } from './js/hero-scene.js';
-    initHeroScene('hero-scene-container', 'hero-canvas');
+    // Inicialización del 3D con requestIdleCallback para no competir con el LCP
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => {
+        initHeroScene('hero-scene-container', 'hero-canvas');
+      });
+    } else {
+      setTimeout(() => {
+        initHeroScene('hero-scene-container', 'hero-canvas');
+      }, 50);
+    }
   </script>
 </body>
 </html>

@@ -1,0 +1,22 @@
+{
+  "name": "NetDrop",
+  "short_name": "NetDrop",
+  "description": "Comparte archivos en red local con código QR",
+  "start_url": "/NetDrop-Web/",
+  "scope": "/NetDrop-Web/",
+  "display": "standalone",
+  "background_color": "#0a0c10",
+  "theme_color": "#0a0c10",
+  "icons": [
+    {
+      "src": "/NetDrop-Web/assets/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/NetDrop-Web/assets/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
