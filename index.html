@@ -39,6 +39,7 @@
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="./css/animations.css">
   <link rel="stylesheet" href="./css/scrollytelling.css">
+  <link rel="stylesheet" href="./css/icons.css">
 
   <!-- Datos Estructurados JSON-LD (@graph) -->
   <script type="application/ld+json">
@@ -217,7 +218,8 @@ python app.py</code></pre>
 
             <!-- Botón de Simular Envío en 3D -->
             <button type="button" class="btn-send-packet" title="Disparar paquetes luminosos en 3D">
-              <span>⚡ Simular Envío</span>
+              <svg class="icon icon--sm" aria-hidden="true"><use href="#i-zap"/></svg>
+              <span>Simular Envío</span>
             </button>
           </div>
         </div>
@@ -378,48 +380,48 @@ python app.py</code></pre>
 
         <div class="features-grid">
           <article class="feature-box">
-            <div class="feature-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <div class="icon-tile">
+              <svg class="icon icon--lg" aria-hidden="true"><use href="#i-qr-code"/></svg>
             </div>
             <h3>Código QR Instantáneo</h3>
             <p>Detección automática de la IP privada en tu adaptador de red y renderizado de un código QR listo para escanear con la cámara del celular.</p>
           </article>
 
           <article class="feature-box">
-            <div class="feature-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            <div class="icon-tile">
+              <svg class="icon icon--lg" aria-hidden="true"><use href="#i-refresh-cw"/></svg>
             </div>
             <h3>Sincronización en Vivo (2 s)</h3>
             <p>Sondeo inteligente a intervalos regulares. Las tarjetas se actualizan automáticamente en todos los clientes conectados sin parpadeos.</p>
           </article>
 
           <article class="feature-box">
-            <div class="feature-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            <div class="icon-tile">
+              <svg class="icon icon--lg" aria-hidden="true"><use href="#i-puzzle"/></svg>
             </div>
             <h3>Subida en Chunks de 2 MB</h3>
             <p>Fragmentación secuencial de archivos pesados en el cliente. Ensamblado temporal seguro y movimiento atómico en disco.</p>
           </article>
 
           <article class="feature-box">
-            <div class="feature-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path><path d="m14.83 14.83 4.24 4.24"></path><path d="m9.17 14.83-4.24 4.24"></path></svg>
+            <div class="icon-tile">
+              <svg class="icon icon--lg" aria-hidden="true"><use href="#i-palette"/></svg>
             </div>
             <h3>Motor de 5 Temas en JSON</h3>
             <p>Personalización de la interfaz web mediante variables CSS gobernadas por JSON: Cálido, Oscuro Minimal, Bosque, Noche y Nórdico.</p>
           </article>
 
           <article class="feature-box">
-            <div class="feature-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <div class="icon-tile">
+              <svg class="icon icon--lg" aria-hidden="true"><use href="#i-shield-check"/></svg>
             </div>
             <h3>Privacidad Punto a Punto</h3>
             <p>Sin cuentas, sin almacenamiento remoto y con soporte para cifrado TLS/HTTPS si se agregan certificados locales en la raíz.</p>
           </article>
 
           <article class="feature-box">
-            <div class="feature-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            <div class="icon-tile">
+              <svg class="icon icon--lg" aria-hidden="true"><use href="#i-eye"/></svg>
             </div>
             <h3>Visor Multimedia Integrado</h3>
             <p>Previsualización inline de imágenes, reproducción de audio y video, y lectura de código o texto directamente en el navegador.</p>
@@ -556,8 +558,9 @@ python app.py</code></pre>
                 <h3 style="font-size: 1.4rem; margin-bottom: 0.3rem;">NetDrop Python v2.1.2</h3>
                 <p style="font-size: 0.92rem; color: var(--text-muted);">Servidor HTTP local integrado con ventana gráfica nativa para Windows y Linux.</p>
               </div>
-              <a href="https://github.com/NioyDev/NetDrop/releases/tag/v2.1.2" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.45rem 0.9rem;">
-                Ver notas de la release v2.1.2 ↗
+              <a href="https://github.com/NioyDev/NetDrop/releases/tag/v2.1.2" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.45rem 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem;">
+                <span>Ver notas de la release v2.1.2</span>
+                <svg class="icon icon--sm" aria-hidden="true"><use href="#i-external-link"/></svg>
               </a>
             </div>
 
@@ -625,8 +628,9 @@ python app.py</code></pre>
 cd NetDrop-Rust
 cargo build --release --features desktop</code></pre>
               </div>
-              <a href="https://github.com/NioyDev/NetDrop-Rust" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
-                Ver repositorio de NetDrop-Rust ↗
+              <a href="https://github.com/NioyDev/NetDrop-Rust" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.4rem;">
+                <span>Ver repositorio de NetDrop-Rust</span>
+                <svg class="icon icon--sm" aria-hidden="true"><use href="#i-external-link"/></svg>
               </a>
             </div>
           </div>
@@ -867,16 +871,26 @@ cargo build --release --features desktop</code></pre>
         <div class="footer-col">
           <h4>Repositorios Oficiales</h4>
           <ul>
-            <li><a href="https://github.com/NioyDev/NetDrop" target="_blank" rel="noopener noreferrer">NetDrop (Python) ↗</a></li>
-            <li><a href="https://github.com/NioyDev/NetDrop-Rust" target="_blank" rel="noopener noreferrer">NetDrop-Rust ↗</a></li>
-            <li><a href="https://github.com/NioyDev/NetDrop-Web" target="_blank" rel="noopener noreferrer">NetDrop-Web (Sitio) ↗</a></li>
-            <li><a href="https://polyformproject.org/licenses/noncommercial/1.0.0/" target="_blank" rel="noopener noreferrer">Licencia PolyForm ↗</a></li>
+            <li><a href="https://github.com/NioyDev/NetDrop" target="_blank" rel="noopener noreferrer">NetDrop (Python) <svg class="icon icon--sm" aria-hidden="true"><use href="#i-external-link"/></svg></a></li>
+            <li><a href="https://github.com/NioyDev/NetDrop-Rust" target="_blank" rel="noopener noreferrer">NetDrop-Rust <svg class="icon icon--sm" aria-hidden="true"><use href="#i-external-link"/></svg></a></li>
+            <li><a href="https://github.com/NioyDev/NetDrop-Web" target="_blank" rel="noopener noreferrer">NetDrop-Web (Sitio) <svg class="icon icon--sm" aria-hidden="true"><use href="#i-external-link"/></svg></a></li>
+            <li><a href="https://polyformproject.org/licenses/noncommercial/1.0.0/" target="_blank" rel="noopener noreferrer">Licencia PolyForm <svg class="icon icon--sm" aria-hidden="true"><use href="#i-external-link"/></svg></a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Créditos e Iconografía</h4>
+          <ul>
+            <li><a href="https://lucide.dev" target="_blank" rel="noopener noreferrer">Lucide Icons (Licencia ISC) <svg class="icon icon--sm" aria-hidden="true"><use href="#i-external-link"/></svg></a></li>
+            <li><a href="https://simpleicons.org" target="_blank" rel="noopener noreferrer">Simple Icons (Licencia CC0) <svg class="icon icon--sm" aria-hidden="true"><use href="#i-external-link"/></svg></a></li>
+            <li><a href="./icons/LICENSE-lucide.txt" target="_blank" rel="noopener noreferrer">Licencia Lucide (Texto)</a></li>
+            <li><a href="./icons/LICENSE-simple-icons.txt" target="_blank" rel="noopener noreferrer">Licencia Simple Icons (Texto)</a></li>
           </ul>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <span>© 2026 NioyDev. Licencia PolyForm Noncommercial 1.0.0.</span>
+        <span>Copyright 2026 NioyDev. Licencia PolyForm Noncommercial 1.0.0.</span>
         <span>Página única optimizada para Google • Cero dependencias externas</span>
       </div>
     </div>

@@ -1,0 +1,82 @@
+/* ==========================================================================
+   NetDrop Icons System - CSS Tokens & Integration
+   Basado en Lucide (stroke 1.5) y Simple Icons (marcas monocromáticas)
+   ========================================================================== */
+
+:root {
+  --icon-stroke: 1.5;
+  --icon-size-sm: 16px;
+  --icon-size-md: 20px;
+  --icon-size-lg: 24px;
+  --icon-size-xl: 32px;
+  --icon-color: var(--text-muted, #98a1b3);
+  --icon-color-accent: var(--brand-terracotta, #c85a32);
+}
+
+/* Icono SVG base */
+.icon {
+  display: inline-block;
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+  vertical-align: middle;
+  stroke: currentColor;
+  stroke-width: var(--icon-stroke, 1.5);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  flex-shrink: 0;
+  transition: color 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Iconos de Marca (Simple Icons usan relleno sólido sin trazo) */
+.icon--brand {
+  stroke: none !important;
+  fill: currentColor !important;
+}
+
+/* Escala de Tamaños */
+.icon--sm {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+}
+
+.icon--md {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+}
+
+.icon--lg {
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
+}
+
+.icon--xl {
+  width: var(--icon-size-xl);
+  height: var(--icon-size-xl);
+}
+
+/* Baldosa sobria para tarjetas de funciones (.icon-tile) */
+.icon-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--surface-raised, #181c24);
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+  color: var(--brand-terracotta, #c85a32);
+  margin-bottom: 1rem;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-card:hover .icon-tile {
+  border-color: rgba(200, 90, 50, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.icon-tile .icon {
+  width: 22px;
+  height: 22px;
+}

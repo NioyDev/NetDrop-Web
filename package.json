@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "prebuild": "node scripts/build-sprite.js",
+    "build": "node scripts/build-sprite.js && vite build && node scripts/check-emojis.js",
+    "check:emojis": "node scripts/check-emojis.js",
     "preview": "vite preview"
   },
   "dependencies": {

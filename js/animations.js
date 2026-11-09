@@ -137,7 +137,7 @@ export const STEPS_DATA = [
           <rect x="14" y="24" width="82" height="18" rx="4" fill="var(--accent-bg)" />
           <text x="55" y="37" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--accent)">NetDrop Web</text>
           <rect x="14" y="50" width="82" height="40" rx="4" fill="var(--surface)" stroke="var(--border)" />
-          <text x="55" y="74" text-anchor="middle" font-size="8" fill="var(--text-muted)">Conectado ⚡</text>
+          <text x="55" y="74" text-anchor="middle" font-size="8" fill="var(--text-muted)">Conectado LAN</text>
         </g>
       </svg>
     `
@@ -189,7 +189,7 @@ export const STEPS_DATA = [
 
           <!-- Carpeta temporal -->
           <rect x="15" y="50" width="130" height="55" rx="6" fill="var(--bg-base)" stroke="var(--border)" />
-          <text x="25" y="70" font-size="10" font-weight="bold" fill="var(--text-muted)">📂 /temp_chunks</text>
+          <text x="25" y="70" font-size="10" font-weight="bold" fill="var(--text-muted)">/temp_chunks</text>
           <text x="25" y="90" font-size="9" fill="var(--accent)">Ensamblando...</text>
 
           <!-- Barra de progreso de subida -->
@@ -197,7 +197,7 @@ export const STEPS_DATA = [
           <rect x="15" y="125" width="98" height="12" rx="6" fill="var(--accent)">
             <animate attributeName="width" values="10;50;95;130" dur="3s" repeatCount="indefinite" />
           </rect>
-          <text x="80" y="152" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-heading)">Mover atómico a /Files ✅</text>
+          <text x="80" y="152" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-heading)">Mover atómico a /Files</text>
         </g>
       </svg>
     `
@@ -225,11 +225,11 @@ export const STEPS_DATA = [
           <text x="20" y="28" font-size="11" font-weight="bold" fill="var(--text-heading)">PC Pantalla</text>
           <!-- Tarjeta de archivo sincronizada -->
           <rect x="15" y="45" width="140" height="42" rx="6" fill="var(--bg-base)" stroke="var(--border)" />
-          <text x="25" y="65" font-size="10" font-weight="bold" fill="var(--text-heading)">📄 documento.pdf</text>
+          <text x="25" y="65" font-size="10" font-weight="bold" fill="var(--text-heading)">documento.pdf</text>
           <text x="25" y="78" font-size="9" fill="var(--text-muted)">1.4 MB • Ahora mismo</text>
           
           <rect x="15" y="95" width="140" height="42" rx="6" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.5" />
-          <text x="25" y="115" font-size="10" font-weight="bold" fill="var(--accent)">🎥 video.mp4</text>
+          <text x="25" y="115" font-size="10" font-weight="bold" fill="var(--accent)">video.mp4</text>
           <text x="25" y="128" font-size="9" fill="var(--accent)">¡Nuevo archivo!</text>
         </g>
 
@@ -239,11 +239,11 @@ export const STEPS_DATA = [
           <text x="20" y="28" font-size="11" font-weight="bold" fill="var(--text-heading)">Móvil Pantalla</text>
           <!-- Tarjeta de archivo sincronizada idéntica -->
           <rect x="15" y="45" width="140" height="42" rx="6" fill="var(--bg-base)" stroke="var(--border)" />
-          <text x="25" y="65" font-size="10" font-weight="bold" fill="var(--text-heading)">📄 documento.pdf</text>
+          <text x="25" y="65" font-size="10" font-weight="bold" fill="var(--text-heading)">documento.pdf</text>
           <text x="25" y="78" font-size="9" fill="var(--text-muted)">1.4 MB • Sincronizado</text>
           
           <rect x="15" y="95" width="140" height="42" rx="6" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.5" />
-          <text x="25" y="115" font-size="10" font-weight="bold" fill="var(--accent)">🎥 video.mp4</text>
+          <text x="25" y="115" font-size="10" font-weight="bold" fill="var(--accent)">video.mp4</text>
           <text x="25" y="128" font-size="9" fill="var(--accent)">¡Nuevo archivo!</text>
         </g>
       </svg>
@@ -266,7 +266,7 @@ export const STEPS_DATA = [
           
           <!-- Botón de descarga -->
           <rect x="20" y="75" width="160" height="34" rx="6" fill="var(--accent)" />
-          <text x="100" y="96" text-anchor="middle" font-size="11" font-weight="bold" fill="#ffffff">⬇️ Descargar a Móvil</text>
+          <text x="100" y="96" text-anchor="middle" font-size="11" font-weight="bold" fill="#ffffff">Descargar a Móvil</text>
         </g>
 
         <!-- Tarjeta eliminada con animación de salida -->
@@ -278,7 +278,7 @@ export const STEPS_DATA = [
           <text x="20" y="55" font-size="10" fill="var(--text-muted)">Eliminado del disco</text>
           
           <rect x="20" y="75" width="160" height="34" rx="6" fill="var(--danger-bg)" stroke="var(--danger)" />
-          <text x="100" y="96" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--danger)">🗑️ Eliminado</text>
+          <text x="100" y="96" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--danger)">Eliminado</text>
         </g>
       </svg>
     `
@@ -455,7 +455,9 @@ export class SvgSequencePlayer {
   togglePlayPause() {
     this.isPlaying = !this.isPlaying;
     if (this.playBtn) {
-      this.playBtn.innerHTML = this.isPlaying ? '⏸' : '▶';
+      this.playBtn.innerHTML = this.isPlaying
+        ? '<svg class="icon icon--sm" aria-hidden="true"><use href="#i-pause"/></svg>'
+        : '<svg class="icon icon--sm" aria-hidden="true"><use href="#i-play"/></svg>';
       this.playBtn.setAttribute('title', this.isPlaying ? 'Pausar' : 'Reproducir');
     }
 

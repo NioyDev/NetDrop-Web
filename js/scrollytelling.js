@@ -113,7 +113,7 @@ export class ScrollytellingController {
           <div class="phone-notch"></div>
           <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: var(--text-muted); font-size: 0.68rem; gap: 0.4rem;">
             <div style="width: 70px; height: 70px; border: 2px dashed var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-              📷
+              <svg class="icon icon--lg" style="color: var(--accent);" aria-hidden="true"><use href="#i-qr"/></svg>
             </div>
             <span>Abriendo cámara...</span>
           </div>
@@ -155,7 +155,7 @@ export class ScrollytellingController {
             <span class="screen-ip">Ensamblado .partials</span>
           </div>
           <div style="margin-top: 0.8rem; background: var(--surface); padding: 0.6rem; border-radius: 6px; border: 1px solid var(--border);">
-            <div style="font-size: 0.65rem; color: var(--text-muted);">📂 temp_chunks/video_vacaciones.mp4.part</div>
+            <div style="font-size: 0.65rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.3rem;"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-folder"/></svg> temp_chunks/video_vacaciones.mp4.part</div>
             <div style="font-size: 0.68rem; font-weight: 600; color: var(--accent); margin-top: 0.2rem;">Recibiendo bloques de 2 MB...</div>
           </div>
         `;
@@ -169,7 +169,7 @@ export class ScrollytellingController {
           </div>
           <div class="screen-card" style="margin-top: 0.5rem; border-color: var(--accent); box-shadow: 0 0 10px var(--accent-bg);">
             <div>
-              <div class="screen-card-title">🎥 video_vacaciones.mp4</div>
+              <div class="screen-card-title" style="display: flex; align-items: center; gap: 0.3rem;"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-film"/></svg> video_vacaciones.mp4</div>
               <div class="screen-card-meta">8.0 MB • Ahora mismo</div>
             </div>
             <span style="font-size: 0.6rem; color: var(--accent); font-weight: 700;">¡Nuevo!</span>
@@ -183,7 +183,7 @@ export class ScrollytellingController {
           </div>
           <div class="screen-card" style="margin-top: 0.5rem;">
             <div>
-              <div class="screen-card-title">🎥 video_vacaciones.mp4</div>
+              <div class="screen-card-title" style="display: flex; align-items: center; gap: 0.3rem;"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-film"/></svg> video_vacaciones.mp4</div>
               <div class="screen-card-meta">8.0 MB • En la PC</div>
             </div>
             <span style="font-size: 0.6rem; color: var(--accent);">✓</span>
@@ -202,7 +202,7 @@ export class ScrollytellingController {
               <div class="screen-card-title" style="text-decoration: line-through;">foto_antigua.png</div>
               <div class="screen-card-meta">Eliminado del disco</div>
             </div>
-            <span style="color: var(--danger); font-size: 0.62rem;">Eliminado 🗑</span>
+            <span style="color: var(--danger); font-size: 0.62rem; display: inline-flex; align-items: center; gap: 0.2rem;"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-trash"/></svg> Eliminado</span>
           </div>
         `;
         break;
