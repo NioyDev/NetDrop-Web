@@ -1,0 +1,371 @@
+/**
+ * NetDrop-Web - Escena 3D del Hero con three.js
+ * Carga modular con tree-shaking, lazy load, control de visibilidad y dispose
+ */
+
+import logoUrl from '../assets/logo.png';
+import {
+  Scene,
+  PerspectiveCamera,
+  WebGLRenderer,
+  Mesh,
+  SphereGeometry,
+  BoxGeometry,
+  PlaneGeometry,
+  RingGeometry,
+  MeshBasicMaterial,
+  MeshStandardMaterial,
+  AmbientLight,
+  DirectionalLight,
+  PointLight,
+  CatmullRomCurve3,
+  Vector3,
+  TubeGeometry,
+  TextureLoader,
+  Group,
+  Color
+} from 'three';
+
+let scene, camera, renderer;
+let centralHostMesh, qrPlaneMesh;
+const satelliteNodes = [];
+const connectionCurves = [];
+const packets = [];
+const wifiRings = [];
+let animFrameId = null;
+let isVisible = false;
+let isTabActive = true;
+let mouseX = 0, mouseY = 0;
+let targetRotX = 0, targetRotY = 0;
+let sceneGroup;
+
+// Obtener color CSS actual
+function getCssVar(varName, fallback = '#c85a32') {
+  const val = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+  return val ? val : fallback;
+}
+
+export function initHeroScene(containerId = 'hero-scene-container', canvasId = 'hero-canvas') {
+  const container = document.getElementById(containerId);
+  const canvas = document.getElementById(canvasId);
+  const fallback = container ? container.querySelector('.hero-fallback') : null;
+
+  if (!container || !canvas) return;
+
+  // Comprobar soporte WebGL
+  try {
+    const glTest = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if (!glTest) throw new Error('WebGL no disponible');
+  } catch (err) {
+    console.warn('[NetDrop-Web] WebGL no disponible en este entorno, conservando fallback visual.', err);
+    return;
+  }
+
+  // Observer de intersección para lazy-load e inicio controlado
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) {
+        if (!scene) {
+          setupThree(container, canvas, fallback);
+        } else if (!animFrameId) {
+          startLoop();
+        }
+      } else {
+        stopLoop();
+      }
+    });
+  }, { threshold: 0.1 });
+
+  observer.observe(container);
+
+  // Control de pestaña activa (Page Visibility API)
+  document.addEventListener('visibilitychange', () => {
+    isTabActive = !document.hidden;
+    if (isTabActive && isVisible) {
+      startLoop();
+    } else {
+      stopLoop();
+    }
+  });
+
+  // Reacción dinámica a cambios de tema CSS
+  window.addEventListener('netdrop-theme-change', updateThemeColors);
+}
+
+function setupThree(container, canvas, fallback) {
+  const width = container.clientWidth || 480;
+  const height = container.clientHeight || 480;
+
+  // 1. Escena
+  scene = new Scene();
+
+  // 2. Cámara
+  camera = new PerspectiveCamera(45, width / height, 0.1, 100);
+  camera.position.set(0, 1.2, 7.5);
+
+  // 3. Renderer con DPR limitado a 2
+  renderer = new WebGLRenderer({
+    canvas: canvas,
+    alpha: true,
+    antialias: true,
+    powerPreference: 'high-performance'
+  });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  // Grupo principal para parallax y rotación
+  sceneGroup = new Group();
+  scene.add(sceneGroup);
+
+  // 4. Luces
+  const ambientLight = new AmbientLight(0xffffff, 1.2);
+  scene.add(ambientLight);
+
+  const dirLight = new DirectionalLight(0xffffff, 1.4);
+  dirLight.position.set(5, 10, 7);
+  scene.add(dirLight);
+
+  const accentColor = new Color(getCssVar('--accent', '#c85a32'));
+  const pointLight = new PointLight(accentColor, 2.5, 15);
+  pointLight.position.set(0, 0, 2);
+  sceneGroup.add(pointLight);
+
+  // 5. Nodo Central (PC Anfitrión con Logo)
+  const textureLoader = new TextureLoader();
+  const logoTexture = textureLoader.load(logoUrl, () => {
+    if (fallback) fallback.classList.add('loaded');
+  }, undefined, () => {
+    // Si falla la carga del logo, quitamos fallback de todas formas
+    if (fallback) fallback.classList.add('loaded');
+  });
+
+  const hostGeo = new SphereGeometry(0.85, 32, 32);
+  const hostMat = new MeshStandardMaterial({
+    map: logoTexture,
+    metalness: 0.2,
+    roughness: 0.3,
+    color: 0xffffff
+  });
+  centralHostMesh = new Mesh(hostGeo, hostMat);
+  sceneGroup.add(centralHostMesh);
+
+  // Anillos Wi-Fi expansivos
+  for (let i = 0; i < 3; i++) {
+    const ringGeo = new RingGeometry(0.95, 1.05, 48);
+    const ringMat = new MeshBasicMaterial({
+      color: accentColor,
+      transparent: true,
+      opacity: 0.6 - i * 0.18,
+      side: 2
+    });
+    const ringMesh = new Mesh(ringGeo, ringMat);
+    ringMesh.rotation.x = Math.PI / 2.3;
+    ringMesh.userData = { scale: 1 + i * 0.45, speed: 0.008 + i * 0.002 };
+    sceneGroup.add(ringMesh);
+    wifiRings.push(ringMesh);
+  }
+
+  // 6. Nodos Satélite (Celular, Tablet, Laptop)
+  const nodeConfigs = [
+    { name: 'Móvil', pos: new Vector3(-2.8, 0.8, 0.4), size: [0.35, 0.58, 0.06] },
+    { name: 'Tablet', pos: new Vector3(2.6, 0.9, -0.2), size: [0.55, 0.72, 0.06] },
+    { name: 'Laptop', pos: new Vector3(0.5, -2.1, 0.3), size: [0.75, 0.5, 0.08] }
+  ];
+
+  nodeConfigs.forEach((cfg) => {
+    const nodeGeo = new BoxGeometry(cfg.size[0], cfg.size[1], cfg.size[2]);
+    const nodeMat = new MeshStandardMaterial({
+      color: new Color(getCssVar('--text-muted', '#666360')),
+      metalness: 0.5,
+      roughness: 0.4
+    });
+    const nodeMesh = new Mesh(nodeGeo, nodeMat);
+    nodeMesh.position.copy(cfg.pos);
+    sceneGroup.add(nodeMesh);
+    satelliteNodes.push(nodeMesh);
+
+    // Curva de conexión en 3D
+    const midPoint = new Vector3(
+      cfg.pos.x * 0.5,
+      cfg.pos.y * 0.5 + 0.4,
+      cfg.pos.z * 0.5 + 0.5
+    );
+    const curve = new CatmullRomCurve3([
+      new Vector3(0, 0, 0),
+      midPoint,
+      cfg.pos
+    ]);
+    connectionCurves.push(curve);
+
+    // Tubo visual suave para la curva
+    const tubeGeo = new TubeGeometry(curve, 32, 0.02, 8, false);
+    const tubeMat = new MeshBasicMaterial({
+      color: accentColor,
+      transparent: true,
+      opacity: 0.35
+    });
+    const tubeMesh = new Mesh(tubeGeo, tubeMat);
+    sceneGroup.add(tubeMesh);
+  });
+
+  // 7. Paquetes de datos que viajan por las curvas
+  connectionCurves.forEach((curve, idx) => {
+    // Paquete hacia satélite (descarga)
+    const p1Geo = new SphereGeometry(0.08, 16, 16);
+    const p1Mat = new MeshBasicMaterial({ color: accentColor });
+    const p1Mesh = new Mesh(p1Geo, p1Mat);
+    p1Mesh.userData = { curve, t: (idx * 0.33) % 1, speed: 0.007, direction: 1 };
+    sceneGroup.add(p1Mesh);
+    packets.push(p1Mesh);
+
+    // Paquete hacia el host (subida)
+    const p2Geo = new BoxGeometry(0.12, 0.12, 0.12);
+    const p2Mat = new MeshBasicMaterial({ color: new Color(0xffffff) });
+    const p2Mesh = new Mesh(p2Geo, p2Mat);
+    p2Mesh.userData = { curve, t: (idx * 0.33 + 0.5) % 1, speed: 0.006, direction: -1 };
+    sceneGroup.add(p2Mesh);
+    packets.push(p2Mesh);
+  });
+
+  // 8. Plano QR que se asoma y rota
+  const qrGeo = new PlaneGeometry(0.65, 0.65);
+  const qrMat = new MeshBasicMaterial({
+    color: accentColor,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.75
+  });
+  qrPlaneMesh = new Mesh(qrGeo, qrMat);
+  qrPlaneMesh.position.set(-1.4, -1.2, 0.8);
+  qrPlaneMesh.rotation.z = Math.PI / 12;
+  sceneGroup.add(qrPlaneMesh);
+
+  // Eventos de Parallax con el ratón
+  window.addEventListener('mousemove', (e) => {
+    const rect = container.getBoundingClientRect();
+    if (e.clientY >= rect.top && e.clientY <= rect.bottom) {
+      mouseX = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+      mouseY = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+      targetRotY = mouseX * 0.25;
+      targetRotX = mouseY * 0.2;
+    }
+  });
+
+  // Redimensionamiento
+  window.addEventListener('resize', () => {
+    if (!renderer || !camera || !container) return;
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  });
+
+  // Comprobar preferencia de movimiento reducido
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) {
+    renderer.render(scene, camera);
+    return;
+  }
+
+  startLoop();
+}
+
+function updateThemeColors() {
+  if (!scene) return;
+  const newAccent = new Color(getCssVar('--accent', '#c85a32'));
+  const newTextMuted = new Color(getCssVar('--text-muted', '#666360'));
+
+  wifiRings.forEach(r => {
+    r.material.color.copy(newAccent);
+  });
+
+  packets.forEach((p, idx) => {
+    if (idx % 2 === 0) p.material.color.copy(newAccent);
+  });
+
+  if (qrPlaneMesh) {
+    qrPlaneMesh.material.color.copy(newAccent);
+  }
+
+  satelliteNodes.forEach(node => {
+    node.material.color.copy(newTextMuted);
+  });
+}
+
+function startLoop() {
+  if (animFrameId) return;
+  const loop = () => {
+    renderFrame();
+    animFrameId = requestAnimationFrame(loop);
+  };
+  animFrameId = requestAnimationFrame(loop);
+}
+
+function stopLoop() {
+  if (animFrameId) {
+    cancelAnimationFrame(animFrameId);
+    animFrameId = null;
+  }
+}
+
+function renderFrame() {
+  if (!renderer || !scene || !camera) return;
+
+  // Rotación suave del host
+  if (centralHostMesh) {
+    centralHostMesh.rotation.y += 0.005;
+  }
+
+  // Parallax suave interpolado
+  sceneGroup.rotation.y += (targetRotY - sceneGroup.rotation.y) * 0.05;
+  sceneGroup.rotation.x += (targetRotX - sceneGroup.rotation.x) * 0.05;
+
+  // Anillos Wi-Fi expansivos
+  wifiRings.forEach(ring => {
+    ring.userData.scale += ring.userData.speed;
+    if (ring.userData.scale > 2.8) {
+      ring.userData.scale = 1.0;
+    }
+    ring.scale.set(ring.userData.scale, ring.userData.scale, 1);
+    ring.material.opacity = Math.max(0, 0.7 * (1 - (ring.userData.scale - 1) / 1.8));
+  });
+
+  // Viaje de paquetes por las curvas
+  packets.forEach(p => {
+    p.userData.t += p.userData.speed * p.userData.direction;
+    if (p.userData.t > 1) p.userData.t = 0;
+    if (p.userData.t < 0) p.userData.t = 1;
+    const pt = p.userData.curve.getPoint(p.userData.t);
+    p.position.copy(pt);
+  });
+
+  // Animación del plano QR
+  if (qrPlaneMesh) {
+    qrPlaneMesh.rotation.y += 0.01;
+  }
+
+  renderer.render(scene, camera);
+}
+
+// Limpieza completa (dispose)
+export function disposeHeroScene() {
+  stopLoop();
+  if (scene) {
+    scene.traverse(obj => {
+      if (obj.geometry) obj.geometry.dispose();
+      if (obj.material) {
+        if (Array.isArray(obj.material)) {
+          obj.material.forEach(m => m.dispose());
+        } else {
+          obj.material.dispose();
+        }
+      }
+    });
+  }
+  if (renderer) {
+    renderer.dispose();
+  }
+  window.removeEventListener('netdrop-theme-change', updateThemeColors);
+}

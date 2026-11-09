@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cómo funciona NetDrop - Transferencias locales explicadas paso a paso</title>
+  <meta name="description" content="Descubre cómo funciona NetDrop paso a paso: arranque local, generación de QR, subida en chunks de 2MB, sincronización en 2 segundos y temas dinámicos.">
+  <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/animations.css">
+</head>
+<body>
+  <!-- Barra de Navegación -->
+  <header class="navbar">
+    <div class="container nav-wrapper">
+      <a href="./index.html" class="brand" aria-label="NetDrop Inicio">
+        <img src="./assets/logo.png" alt="NetDrop Logo" class="brand-logo">
+        <span>NetDrop</span>
+        <span class="brand-tag">v2.1.2</span>
+      </a>
+
+      <nav aria-label="Navegación principal">
+        <ul class="nav-links">
+          <li><a href="./index.html" class="nav-link">Inicio</a></li>
+          <li><a href="./como-funciona.html" class="nav-link active">Cómo funciona</a></li>
+          <li><a href="./docs.html" class="nav-link">Documentación</a></li>
+          <li><a href="./index.html#descargas" class="nav-link">Descargas</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Selector de Temas -->
+        <div class="theme-selector-wrap">
+          <button type="button" id="theme-menu-btn" class="theme-btn" aria-label="Cambiar tema de color" aria-expanded="false">
+            <span class="theme-color-preview"></span>
+            <span class="theme-btn-name">Cálido Terracota</span>
+            <span aria-hidden="true">▾</span>
+          </button>
+          <div id="theme-dropdown" class="theme-dropdown" role="menu"></div>
+        </div>
+
+        <a href="https://github.com/NioyDev/NetDrop" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" aria-label="GitHub">
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="how-it-works-hero">
+      <span class="section-tag">Flujo Interactivo</span>
+      <h1 class="section-title">Cómo funciona NetDrop</h1>
+      <p class="section-description">
+        Una mirada transparente al ciclo de vida real de una transferencia: desde que inicias la aplicación en tu PC hasta que tus archivos llegan al celular.
+      </p>
+    </section>
+
+    <!-- Reproductor Interactivo SVG de los 7 Pasos -->
+    <div class="interactive-player" id="interactive-player">
+      <!-- Selector de Pasos 1 a 7 -->
+      <nav class="player-stepper" aria-label="Pasos de la demostración"></nav>
+
+      <!-- Escenario SVG -->
+      <div class="player-viewport" role="region" aria-live="polite"></div>
+
+      <!-- Barra de Controles Inferior -->
+      <div class="player-controls">
+        <div class="control-buttons">
+          <button type="button" class="control-btn btn-prev" title="Paso anterior" aria-label="Paso anterior">◀</button>
+          <button type="button" class="control-btn btn-play-pause" title="Pausar / Reproducir" aria-label="Pausar o reproducir">⏸</button>
+          <button type="button" class="control-btn btn-next" title="Paso siguiente" aria-label="Paso siguiente">▶</button>
+        </div>
+
+        <div class="step-info-text">
+          <div class="step-info-title">Cargando paso...</div>
+          <p class="step-info-desc"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Explicación detallada de los 7 pasos en tarjetas editoriales -->
+    <section style="margin-bottom: 5rem;">
+      <h2 style="font-size: 1.8rem; margin-bottom: 2rem;">Detalles técnicos del comportamiento del sistema</h2>
+
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <article class="feature-card">
+          <h3>1. Inicio y enlace de red local (:5000)</h3>
+          <p>
+            Al ejecutar el binario de NetDrop, se inicializa el servidor WSGI <strong>Waitress</strong> detrás de la aplicación <strong>Flask</strong>, escuchando en todas las interfaces de red (<code>0.0.0.0:5000</code>). Simultáneamente, la ventana gráfica de escritorio se despliega mediante <strong>Pywebview</strong> para que el anfitrión tenga control total de los archivos compartidos.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <h3>2. Detección automática de la IP local y generación de QR</h3>
+          <p>
+            La aplicación inspecciona los adaptadores de red activos para determinar la dirección IPv4 asignada por el router (por ejemplo, <code>192.168.1.15</code>). A partir de la URL completa (<code>http://192.168.1.15:5000</code>), se sintetiza un código QR limpio con el isotipo de NetDrop en el centro, listo para ser leído por cualquier lector de cámara nativo.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <h3>3. Escaneo y conexión directa punto a punto</h3>
+          <p>
+            Cuando el teléfono móvil escanea el QR, su navegador solicita la página directamente a la IP de la PC anfitriona. Toda la negociación y transferencia se realiza dentro del enrutador Wi-Fi de la red local. Si el teléfono se queda sin conexión a internet externa o los datos móviles están apagados, la transferencia sigue funcionando con normalidad.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <h3>4. Subida fragmentada en bloques de 2 MB (Zero Mobile OOM Crashes)</h3>
+          <p>
+            Para evitar que teléfonos con poca memoria RAM o navegadores móviles se cierren por falta de memoria (Out-Of-Memory) al transferir videos de varios gigabytes, el cliente JavaScript divide el archivo en fragmentos continuos de <strong>2 MB</strong>. Cada fragmento viaja por HTTP POST, se valida en <code>temp_chunks/</code> y una vez completado, el servidor ejecuta un movimiento atómico (<code>os.replace</code>) a la carpeta de destino final.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <h3>5. Sincronización en vivo cada 2 segundos (Live Sync)</h3>
+          <p>
+            La interfaz implementa un sondeo eficiente cada <strong>2 segundos</strong> hacia el endpoint de catálogo. Si otro usuario en la red sube o borra un archivo, todos los clientes reciben la lista actualizada y dibujan las nuevas tarjetas editoriales al instante, sin interrupción de la interfaz ni recargas completas.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <h3>6. Descarga a un clic y eliminación reactiva</h3>
+          <p>
+            Cada tarjeta dispone de enlaces de descarga directa y un botón de eliminación. Cuando un archivo se elimina del disco de la PC anfitriona, el evento se replica en todas las pantallas con una animación de salida suave, liberando espacio de almacenamiento local al instante.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <h3>7. Motor de temas JSON y persistencia</h3>
+          <p>
+            NetDrop v2.1.2 cuenta con un motor dinámico gobernado por <code>themes.json</code>. Permite alternar al vuelo entre 5 temas predefinidos (<em>Cálido Terracota</em>, <em>Oscuro Minimal</em>, <em>Bosque Verde</em>, <em>Noche Ámbar</em> y <em>Nórdico Frío</em>) o cargar esquemas personalizados mediante archivos JSON que se almacenan en <code>.active_theme.json</code>.
+          </p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© 2026 NioyDev. Licencia PolyForm Noncommercial 1.0.0.</span>
+        <span><a href="./index.html">← Volver al Inicio</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="./js/main.js"></script>
+  <script type="module" src="./js/animations.js"></script>
+</body>
+</html>
