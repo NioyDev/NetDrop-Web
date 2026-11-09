@@ -65,7 +65,7 @@ if (spriteMarkerRegex.test(indexContent)) {
   indexContent = indexContent.replace(spriteMarkerRegex, replacement);
 } else {
   // Insertar justo después de <body>
-  indexContent = indexContent.replace('<body class="theme-midnight">', `<body class="theme-midnight">\n  ${replacement}`);
+  indexContent = indexContent.replace(/<body[^>]*>/, match => `${match}\n  ${replacement}`);
 }
 
 fs.writeFileSync(indexPath, indexContent, 'utf-8');

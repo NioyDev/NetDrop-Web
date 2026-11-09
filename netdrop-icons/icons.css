@@ -10,7 +10,7 @@
   --icon-size-lg: 24px;
   --icon-size-xl: 32px;
   --icon-color: var(--text-muted, #98a1b3);
-  --icon-color-accent: var(--brand-terracotta, #c85a32);
+  --icon-color-accent: var(--accent, #e2693d);
 }
 
 /* Icono SVG base */
@@ -63,20 +63,22 @@
   width: 44px;
   height: 44px;
   border-radius: 10px;
-  background: var(--surface-raised, #181c24);
-  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
-  color: var(--brand-terracotta, #c85a32);
+  background: var(--surface-elevated, #181c24);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  color: var(--accent, #e2693d);
   margin-bottom: 1rem;
-  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
 }
 
+.feature-box:hover .icon-tile,
 .feature-card:hover .icon-tile {
-  border-color: rgba(200, 90, 50, 0.4);
+  border-color: rgba(226, 105, 61, 0.4);
+  color: var(--accent-hover, #f07d53);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .icon-tile .icon {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
 }
