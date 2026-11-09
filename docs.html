@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentación Técnica - NetDrop</title>
+  <meta name="description" content="Guías de uso, arquitectura de NetDrop (Python y Rust), configuración de red y temas en JSON.">
+  <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+  <link rel="stylesheet" href="./css/style.css">
+  <style>
+    .docs-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 3.5rem;
+      padding: 3rem 0 5rem;
+    }
+
+    .docs-sidebar {
+      position: sticky;
+      top: 100px;
+      height: calc(100vh - 120px);
+      overflow-y: auto;
+      border-right: 1px solid var(--border);
+      padding-right: 1.5rem;
+    }
+
+    .docs-sidebar h4 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin: 1.5rem 0 0.6rem;
+    }
+
+    .docs-sidebar ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .docs-sidebar a {
+      color: var(--text);
+      font-size: 0.9rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: var(--radius-sm);
+      display: block;
+    }
+
+    .docs-sidebar a:hover {
+      background: var(--surface-hover);
+      color: var(--accent);
+    }
+
+    .docs-content {
+      max-width: 820px;
+    }
+
+    .docs-content h2 {
+      font-size: 2rem;
+      margin: 2.5rem 0 1rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .docs-content h2:first-of-type {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+
+    .docs-content h3 {
+      font-size: 1.35rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+
+    .docs-content p {
+      margin-bottom: 1.1rem;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .code-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      margin: 1.25rem 0;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      overflow-x: auto;
+      color: var(--text-heading);
+    }
+
+    .callout {
+      background: var(--accent-bg);
+      border-left: 4px solid var(--accent);
+      padding: 1rem 1.25rem;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin: 1.5rem 0;
+    }
+
+    .callout-title {
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+    }
+
+    @media (max-width: 860px) {
+      .docs-layout {
+        grid-template-columns: 1fr;
+      }
+      .docs-sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Barra de Navegación -->
+  <header class="navbar">
+    <div class="container nav-wrapper">
+      <a href="./index.html" class="brand" aria-label="NetDrop Inicio">
+        <img src="./assets/logo.png" alt="NetDrop Logo" class="brand-logo">
+        <span>NetDrop</span>
+        <span class="brand-tag">Docs</span>
+      </a>
+
+      <nav aria-label="Navegación principal">
+        <ul class="nav-links">
+          <li><a href="./index.html" class="nav-link">Inicio</a></li>
+          <li><a href="./como-funciona.html" class="nav-link">Cómo funciona</a></li>
+          <li><a href="./docs.html" class="nav-link active">Documentación</a></li>
+          <li><a href="./index.html#descargas" class="nav-link">Descargas</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Selector de Temas -->
+        <div class="theme-selector-wrap">
+          <button type="button" id="theme-menu-btn" class="theme-btn" aria-label="Cambiar tema de color" aria-expanded="false">
+            <span class="theme-color-preview"></span>
+            <span class="theme-btn-name">Cálido Terracota</span>
+            <span aria-hidden="true">▾</span>
+          </button>
+          <div id="theme-dropdown" class="theme-dropdown" role="menu"></div>
+        </div>
+
+        <a href="https://github.com/NioyDev/NetDrop" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" aria-label="GitHub">
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container docs-layout">
+    <!-- Menú Lateral -->
+    <aside class="docs-sidebar">
+      <h4>Primeros Pasos</h4>
+      <ul>
+        <li><a href="#inicio-rapido">Inicio Rápido</a></li>
+        <li><a href="#requisitos">Requisitos de Red</a></li>
+      </ul>
+
+      <h4>Arquitectura</h4>
+      <ul>
+        <li><a href="#arquitectura-python">NetDrop Python (v2.1.2)</a></li>
+        <li><a href="#arquitectura-rust">NetDrop Rust (En desarrollo)</a></li>
+        <li><a href="#comparativa">Comparativa Técnica</a></li>
+      </ul>
+
+      <h4>Configuración</h4>
+      <ul>
+        <li><a href="#puertos-firewall">Puertos y Firewall</a></li>
+        <li><a href="#temas-json">Temas en JSON</a></li>
+      </ul>
+
+      <h4>Licencia</h4>
+      <ul>
+        <li><a href="#licencia">PolyForm Noncommercial</a></li>
+      </ul>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="docs-content">
+      <h1 style="font-size: 2.6rem; margin-bottom: 1rem;">Documentación de NetDrop</h1>
+      <p style="font-size: 1.15rem; color: var(--text-muted); margin-bottom: 2rem;">
+        Aprende cómo configurar, ejecutar y extender NetDrop tanto en su edición clásica en Python como en su próxima edición en Rust.
+      </p>
+
+      <!-- 1. Inicio Rápido -->
+      <section id="inicio-rapido">
+        <h2>Inicio Rápido</h2>
+        <p>
+          NetDrop está diseñado para funcionar inmediatamente después de descargarse, sin requerir instalaciones de Python o bibliotecas externas en tu sistema.
+        </p>
+
+        <h3>Ejecución en Windows</h3>
+        <ol style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text);">
+          <li>Descarga el instalador <code>NetDrop-Setup.exe</code> o el ejecutable portable <code>NetDrop.exe</code> desde la sección de descargas.</li>
+          <li>Ejecuta el archivo. Si el Firewall de Windows solicita permiso para comunicarse en redes privadas, acepta para permitir la conexión del puerto 5000.</li>
+          <li>Se abrirá la ventana de escritorio con el código QR. ¡Apunta la cámara de tu móvil para acceder de inmediato!</li>
+        </ol>
+
+        <h3>Ejecución en Linux</h3>
+        <div class="code-block">
+# Si descargaste el paquete .deb (Debian, Ubuntu, Mint):
+sudo dpkg -i netdrop-installer.deb
+
+# Si usas la versión comprimida portátil:
+unzip NetDrop-Linux-x64.zip
+cd NetDrop-Linux-x64
+./NetDrop
+        </div>
+      </section>
+
+      <!-- 2. Requisitos de Red -->
+      <section id="requisitos">
+        <h2>Requisitos de Red</h2>
+        <p>
+          Para que los dispositivos puedan descubrirse y comunicarse:
+        </p>
+        <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text);">
+          <li>La computadora anfitriona y los dispositivos móviles deben estar conectados a la <strong>misma red Wi-Fi o red de área local (LAN)</strong>.</li>
+          <li>No se requiere conexión a internet hacia el exterior. NetDrop funciona perfectamente en redes aisladas (offline).</li>
+          <li>En redes Wi-Fi de hoteles o universidades con <em>Client Isolation</em> (aislamiento de clientes), los dispositivos pueden tener restringida la visibilidad mutua. En ese caso, puedes activar la zona Wi-Fi portátil (Hotspot) de tu móvil o PC.</li>
+        </ul>
+      </section>
+
+      <!-- 3. Arquitectura Python -->
+      <section id="arquitectura-python">
+        <h2>Arquitectura de NetDrop Python (v2.1.2)</h2>
+        <p>
+          La versión clásica de NetDrop está construida combinando componentes maduros del ecosistema Python:
+        </p>
+
+        <div class="callout">
+          <div class="callout-title">Pila Tecnológica Python:</div>
+          <div><strong>Flask</strong> (rutas y API) + <strong>Waitress</strong> (servidor WSGI multihilo para producción) + <strong>Pywebview</strong> (interfaz gráfica de escritorio nativa basada en Chromium / Webview2).</div>
+        </div>
+
+        <h3>Gestión de Memoria y Subida en Chunks</h3>
+        <p>
+          Al transferir archivos grandes (videos 4K, archivos ISO o zips), los navegadores móviles pueden experimentar cierres inesperados por falta de memoria RAM. NetDrop resuelve esto mediante:
+        </p>
+        <ul style="margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text);">
+          <li><strong>División en fragmentos de 2 MB:</strong> El cliente genera slices del Blob binario en Javascript y los transmite secuencialmente.</li>
+          <li><strong>Directorio temporal:</strong> El servidor almacena los fragmentos en <code>temp_chunks/</code>.</li>
+          <li><strong>Movimiento atómico:</strong> Al recibir el último chunk, se unen los fragmentos y se trasladan atómicamente a <code>Files/</code>.</li>
+        </ul>
+      </section>
+
+      <!-- 4. Arquitectura Rust -->
+      <section id="arquitectura-rust">
+        <h2>Arquitectura de NetDrop Rust (En Desarrollo)</h2>
+        <p>
+          NetDrop-Rust es la evolución del proyecto desarrollada desde cero para alcanzar el máximo rendimiento posible con un consumo ínfimo de memoria:
+        </p>
+        <div class="callout">
+          <div class="callout-title">Pila Tecnológica Rust:</div>
+          <div><strong>Axum</strong> (framework HTTP ergonómico y rápido) + <strong>Tokio</strong> (motor de runtime asíncrono no bloqueante) + <strong>Tower</strong> (middlewares y capas de servicio).</div>
+        </div>
+
+        <p>
+          En la versión Rust, las transferencias se procesan como flujos directos de bytes (streaming) sin cargar el archivo completo en memoria intermedia, reduciendo el consumo de RAM a menos de <strong>15 MB</strong> incluso durante transferencias masivas a velocidad gigabit.
+        </p>
+      </section>
+
+      <!-- 5. Puertos y Firewall -->
+      <section id="puertos-firewall">
+        <h2>Puertos y Firewall</h2>
+        <p>
+          NetDrop utiliza el puerto estándar <code>5000</code>. Si tienes un cortafuegos activo en Linux (como UFW) o en Windows, puedes habilitarlo con:
+        </p>
+        <div class="code-block">
+# En Linux con UFW:
+sudo ufw allow 5000/tcp
+
+# En Windows (PowerShell Administrador):
+New-NetFirewallRule -DisplayName "NetDrop Server" -Direction Inbound -LocalPort 5000 -Protocol TCP -Action Allow
+        </div>
+      </section>
+
+      <!-- 6. Temas en JSON -->
+      <section id="temas-json">
+        <h2>Sistema de Temas en JSON</h2>
+        <p>
+          NetDrop incluye soporte para esquemas de color definidos mediante archivos <code>.json</code>. Puedes crear tu propia paleta copiando la siguiente estructura:
+        </p>
+        <div class="code-block">
+{
+  "id": "mi-tema-personalizado",
+  "name": "Mi Tema Personal",
+  "bgBase": "#1a1918",
+  "surface": "#262422",
+  "surfaceHover": "#33302c",
+  "text": "#d6d2c9",
+  "textHeading": "#ffffff",
+  "textMuted": "#9c9689",
+  "accent": "#d97706",
+  "accentHover": "#b45309",
+  "accentBg": "rgba(217, 119, 6, 0.15)",
+  "border": "#3a3733",
+  "borderHover": "#4d4944",
+  "danger": "#e11d48",
+  "dangerHover": "#be123c",
+  "dangerBg": "rgba(225, 29, 72, 0.15)"
+}
+        </div>
+      </section>
+
+      <!-- 7. Licencia -->
+      <section id="licencia">
+        <h2>Licencia</h2>
+        <p>
+          NetDrop y NetDrop-Web están licenciados bajo los términos de la <strong>PolyForm Noncommercial License 1.0.0</strong>. Se permite el uso, copia, modificación y distribución sin costo para fines no comerciales.
+        </p>
+      </section>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© 2026 NioyDev. Licencia PolyForm Noncommercial 1.0.0.</span>
+        <span><a href="./index.html">← Volver al Inicio</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
