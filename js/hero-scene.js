@@ -1,6 +1,6 @@
 /**
- * NetDrop-Web - Escena 3D del Hero con Three.js (Modo Oscuro Técnico)
- * Detección segura de WebGL en canvas aislado, esqueleto sin texto y arranque inmediato
+ * NetDrop-Web - Escena 3D del Hero con Three.js (Modo Oscuro Técnico & Interactividad)
+ * Soporta rotación libre con el cursor, tooltips por raycasting y botón 'Simular Envío'
  */
 
 import logoUrl from '../assets/logo.png';
@@ -24,7 +24,9 @@ import {
   TextureLoader,
   Group,
   Color,
-  AdditiveBlending
+  AdditiveBlending,
+  Raycaster,
+  Vector2
 } from 'three';
 
 let scene, camera, renderer;
@@ -39,14 +41,13 @@ let isTabActive = true;
 let mouseX = 0, mouseY = 0;
 let targetRotX = 0, targetRotY = 0;
 let sceneGroup;
+let raycaster, mouseVector, tooltipEl;
 
-// Obtener color CSS actual
 function getCssVar(varName, fallback = '#e2693d') {
   const val = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
   return val ? val : fallback;
 }
 
-// Prueba no destructiva de WebGL en canvas aislado
 function checkWebGLSupport() {
   try {
     const testCanvas = document.createElement('canvas');
@@ -64,16 +65,15 @@ export function initHeroScene(containerId = 'hero-scene-container', canvasId = '
   const container = document.getElementById(containerId);
   const canvas = document.getElementById(canvasId);
   const skeleton = container ? container.querySelector('.hero-skeleton') : null;
+  tooltipEl = container ? container.querySelector('.hero-node-tooltip') : null;
 
   if (!container || !canvas) return;
 
-  // Comprobar soporte WebGL sin contaminar el canvas de Three.js
   if (!checkWebGLSupport()) {
-    console.info('[NetDrop-Web] WebGL no disponible en este dispositivo. Mostrando ilustración vectorial estática.');
+    console.info('[NetDrop-Web] WebGL no disponible en este dispositivo. Mostrando ilustración estática.');
     return;
   }
 
-  // Detección directa si ya está en viewport para arrancar de inmediato
   const rect = container.getBoundingClientRect();
   const inViewportNow = rect.top < window.innerHeight && rect.bottom > 0;
 
@@ -81,7 +81,6 @@ export function initHeroScene(containerId = 'hero-scene-container', canvasId = '
     setupThree(container, canvas, skeleton);
   }
 
-  // IntersectionObserver para pausar cuando el usuario hace scroll
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       isVisible = entry.isIntersecting;
@@ -99,7 +98,6 @@ export function initHeroScene(containerId = 'hero-scene-container', canvasId = '
 
   observer.observe(container);
 
-  // Control de visibilidad de pestaña (Page Visibility API)
   document.addEventListener('visibilitychange', () => {
     isTabActive = !document.hidden;
     if (isTabActive && isVisible) {
@@ -109,22 +107,26 @@ export function initHeroScene(containerId = 'hero-scene-container', canvasId = '
     }
   });
 
-  // Reacción dinámica a cambios de tema CSS
   window.addEventListener('netdrop-theme-change', updateThemeColors);
+
+  // Botón para simular envío de paquetes en el hero
+  const sendBtn = container.querySelector('.btn-send-packet');
+  if (sendBtn) {
+    sendBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      triggerPacketBurst();
+    });
+  }
 }
 
 function setupThree(container, canvas, skeleton) {
   const width = container.clientWidth || 480;
   const height = container.clientHeight || 330;
 
-  // 1. Escena
   scene = new Scene();
-
-  // 2. Cámara
   camera = new PerspectiveCamera(42, width / height, 0.1, 100);
   camera.position.set(0, 1.2, 7.8);
 
-  // 3. Renderer limpio
   renderer = new WebGLRenderer({
     canvas: canvas,
     alpha: true,
@@ -134,11 +136,9 @@ function setupThree(container, canvas, skeleton) {
   renderer.setSize(width, height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  // Grupo principal para parallax
   sceneGroup = new Group();
   scene.add(sceneGroup);
 
-  // 4. Iluminación técnica
   const ambientLight = new AmbientLight(0xffffff, 1.4);
   scene.add(ambientLight);
 
@@ -151,10 +151,8 @@ function setupThree(container, canvas, skeleton) {
   pointLight.position.set(0, 0, 2);
   sceneGroup.add(pointLight);
 
-  // 5. Nodo Central (PC Anfitrión con Logo Oficial)
   const textureLoader = new TextureLoader();
   const logoTexture = textureLoader.load(logoUrl, () => {
-    // Si la textura se descarga, se mapea correctamente
     if (centralHostMesh) {
       centralHostMesh.material.map = logoTexture;
       centralHostMesh.material.needsUpdate = true;
@@ -169,9 +167,9 @@ function setupThree(container, canvas, skeleton) {
     color: 0xffffff
   });
   centralHostMesh = new Mesh(hostGeo, hostMat);
+  centralHostMesh.userData = { title: 'PC Host (Servidor NetDrop :5000)' };
   sceneGroup.add(centralHostMesh);
 
-  // Anillos Wi-Fi expansivos sutiles
   for (let i = 0; i < 3; i++) {
     const ringGeo = new RingGeometry(0.95, 1.04, 48);
     const ringMat = new MeshBasicMaterial({
@@ -187,11 +185,10 @@ function setupThree(container, canvas, skeleton) {
     wifiRings.push(ringMesh);
   }
 
-  // 6. Nodos Satélite (Móvil, Tablet, Laptop)
   const nodeConfigs = [
-    { name: 'Smartphone', pos: new Vector3(-2.8, 0.75, 0.3), size: [0.36, 0.62, 0.06] },
-    { name: 'Tablet', pos: new Vector3(2.6, 0.85, -0.2), size: [0.55, 0.72, 0.06] },
-    { name: 'Laptop', pos: new Vector3(0.4, -2.0, 0.3), size: [0.75, 0.5, 0.08] }
+    { name: 'Smartphone (Cliente Web)', pos: new Vector3(-2.8, 0.75, 0.3), size: [0.36, 0.62, 0.06] },
+    { name: 'Tablet (Cliente Web)', pos: new Vector3(2.6, 0.85, -0.2), size: [0.55, 0.72, 0.06] },
+    { name: 'Laptop (Cliente Web)', pos: new Vector3(0.4, -2.0, 0.3), size: [0.75, 0.5, 0.08] }
   ];
 
   nodeConfigs.forEach((cfg) => {
@@ -203,10 +200,10 @@ function setupThree(container, canvas, skeleton) {
     });
     const nodeMesh = new Mesh(nodeGeo, nodeMat);
     nodeMesh.position.copy(cfg.pos);
+    nodeMesh.userData = { title: cfg.name };
     sceneGroup.add(nodeMesh);
     satelliteNodes.push(nodeMesh);
 
-    // Curva bezier de conexión tridimensional
     const midPoint = new Vector3(
       cfg.pos.x * 0.5,
       cfg.pos.y * 0.5 + 0.45,
@@ -219,7 +216,6 @@ function setupThree(container, canvas, skeleton) {
     ]);
     connectionCurves.push(curve);
 
-    // Tubo de fibra luminosa para la curva
     const tubeGeo = new TubeGeometry(curve, 32, 0.018, 8, false);
     const tubeMat = new MeshBasicMaterial({
       color: accentColor,
@@ -230,9 +226,7 @@ function setupThree(container, canvas, skeleton) {
     sceneGroup.add(tubeMesh);
   });
 
-  // 7. Paquetes de datos luminosos (Mezcla aditiva para brillo en oscuro)
   connectionCurves.forEach((curve, idx) => {
-    // Paquete de subida
     const p1Geo = new SphereGeometry(0.08, 16, 16);
     const p1Mat = new MeshBasicMaterial({
       color: accentColor,
@@ -243,7 +237,6 @@ function setupThree(container, canvas, skeleton) {
     sceneGroup.add(p1Mesh);
     packets.push(p1Mesh);
 
-    // Paquete de descarga
     const p2Geo = new BoxGeometry(0.11, 0.11, 0.11);
     const p2Mat = new MeshBasicMaterial({
       color: new Color(0xffffff),
@@ -255,7 +248,6 @@ function setupThree(container, canvas, skeleton) {
     packets.push(p2Mesh);
   });
 
-  // 8. Plano QR de enlace que rota
   const qrGeo = new PlaneGeometry(0.65, 0.65);
   const qrMat = new MeshBasicMaterial({
     color: accentColor,
@@ -268,7 +260,10 @@ function setupThree(container, canvas, skeleton) {
   qrPlaneMesh.rotation.z = Math.PI / 12;
   sceneGroup.add(qrPlaneMesh);
 
-  // Parallax con el cursor
+  // Raycaster para tooltips
+  raycaster = new Raycaster();
+  mouseVector = new Vector2();
+
   window.addEventListener('mousemove', (e) => {
     const r = container.getBoundingClientRect();
     if (e.clientY >= r.top && e.clientY <= r.bottom) {
@@ -276,10 +271,29 @@ function setupThree(container, canvas, skeleton) {
       mouseY = (e.clientY - r.top - r.height / 2) / (r.height / 2);
       targetRotY = mouseX * 0.22;
       targetRotX = mouseY * 0.18;
+
+      if (tooltipEl && camera) {
+        mouseVector.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+        mouseVector.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+        raycaster.setFromCamera(mouseVector, camera);
+        const allNodes = [centralHostMesh, ...satelliteNodes];
+        const intersects = raycaster.intersectObjects(allNodes);
+
+        if (intersects.length > 0) {
+          const hit = intersects[0].object;
+          tooltipEl.textContent = hit.userData.title || 'Nodo';
+          tooltipEl.style.left = `${e.clientX - r.left}px`;
+          tooltipEl.style.top = `${e.clientY - r.top}px`;
+          tooltipEl.classList.add('visible');
+        } else {
+          tooltipEl.classList.remove('visible');
+        }
+      }
+    } else if (tooltipEl) {
+      tooltipEl.classList.remove('visible');
     }
   });
 
-  // Reajuste responsive
   window.addEventListener('resize', () => {
     if (!renderer || !camera || !container) return;
     const w = container.clientWidth;
@@ -289,19 +303,43 @@ function setupThree(container, canvas, skeleton) {
     renderer.setSize(w, h);
   });
 
-  // Render inicial
   renderer.render(scene, camera);
 
-  // Desvanecer el esqueleto SVG inmediatamente tras renderizar el frame 1
   if (skeleton) {
     skeleton.classList.add('loaded');
   }
 
-  // Si el usuario prefiere movimiento reducido, dejamos el cuadro estático
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReduced) return;
 
   startLoop();
+}
+
+function triggerPacketBurst() {
+  if (!connectionCurves.length) return;
+  const accentColor = new Color(getCssVar('--accent', '#e2693d'));
+
+  for (let i = 0; i < 6; i++) {
+    const curve = connectionCurves[i % connectionCurves.length];
+    const bGeo = new SphereGeometry(0.12, 16, 16);
+    const bMat = new MeshBasicMaterial({
+      color: accentColor,
+      blending: AdditiveBlending
+    });
+    const burstMesh = new Mesh(bGeo, bMat);
+    burstMesh.userData = { curve, t: 0, speed: 0.02 + Math.random() * 0.01, direction: 1 };
+    sceneGroup.add(burstMesh);
+    packets.push(burstMesh);
+
+    // Auto-eliminar tras completar ciclo
+    setTimeout(() => {
+      sceneGroup.remove(burstMesh);
+      const idx = packets.indexOf(burstMesh);
+      if (idx > -1) packets.splice(idx, 1);
+      bGeo.dispose();
+      bMat.dispose();
+    }, 1800);
+  }
 }
 
 function updateThemeColors() {

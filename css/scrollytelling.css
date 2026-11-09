@@ -1,0 +1,589 @@
+/* ==========================================================================
+   Scrollytelling & Elementos Interactivos - Estilo Apple
+   Animaciones fluidas con transform/opacity, cero scroll-jacking
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Scrollytelling Escenario Sticky (#como-funciona)
+   -------------------------------------------------------------------------- */
+
+.scrolly-container {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+/* Escenario Fijo a la Izquierda */
+.scrolly-stage-col {
+  position: relative;
+}
+
+.scrolly-stage {
+  position: sticky;
+  top: 90px;
+  height: calc(100svh - 110px);
+  max-height: 640px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 1.5rem;
+  overflow: hidden;
+}
+
+/* Dispositivos en el Escenario */
+.devices-stage {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+/* Marco PC Monitor (Sobrio, sin logos ajenos) */
+.device-pc {
+  position: absolute;
+  left: 20px;
+  top: 30px;
+  width: 320px;
+  height: 220px;
+  background: #0f131a;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1;
+  transition: transform var(--transition-base), border-color var(--transition-base);
+}
+
+.device-pc-stand {
+  position: absolute;
+  left: 155px;
+  top: 250px;
+  width: 50px;
+  height: 40px;
+  background: #1c222d;
+  border-radius: 4px;
+  z-index: 0;
+}
+
+.device-pc-base {
+  position: absolute;
+  left: 110px;
+  top: 285px;
+  width: 140px;
+  height: 8px;
+  background: #252d3a;
+  border-radius: 4px;
+  z-index: 0;
+}
+
+/* Marco Smartphone */
+.device-phone {
+  position: absolute;
+  right: 25px;
+  bottom: 25px;
+  width: 155px;
+  height: 290px;
+  background: #0d1017;
+  border: 2.5px solid rgba(255, 255, 255, 0.18);
+  border-radius: 26px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 2;
+  transition: transform var(--transition-base);
+}
+
+.phone-notch {
+  width: 55px;
+  height: 14px;
+  background: #000000;
+  border-radius: 0 0 10px 10px;
+  margin: 0 auto;
+  flex-shrink: 0;
+}
+
+/* Pantallas que emulan NetDrop Real */
+.screen-content {
+  flex: 1;
+  background: var(--bg-base);
+  color: var(--text);
+  padding: 0.6rem;
+  font-size: 0.72rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  position: relative;
+  transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+.screen-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.35rem;
+}
+
+.screen-brand {
+  font-weight: 700;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--text-heading);
+}
+
+.screen-ip {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--accent);
+}
+
+.screen-dropzone {
+  border: 1.5px dashed var(--border-hover);
+  border-radius: 6px;
+  padding: 0.5rem 0.4rem;
+  text-align: center;
+  background: var(--surface);
+  transition: border-color var(--transition-fast);
+}
+
+.screen-dropzone.active-drop {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+}
+
+.screen-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.45rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.3rem;
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.screen-card-title {
+  font-weight: 600;
+  font-size: 0.7rem;
+  color: var(--text-heading);
+}
+
+.screen-card-meta {
+  font-size: 0.58rem;
+  color: var(--text-muted);
+}
+
+/* Columna de Pasos de Texto Scrolly */
+.scrolly-steps-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8rem;
+  padding: 4rem 0 12rem;
+}
+
+.scrolly-step-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem;
+  box-shadow: var(--shadow-sm);
+  transition: opacity var(--transition-base), transform var(--transition-base), border-color var(--transition-base);
+  opacity: 0.35;
+  transform: translateY(16px);
+}
+
+.scrolly-step-card.active-step {
+  opacity: 1;
+  transform: translateY(0);
+  border-color: var(--accent);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.scrolly-step-num {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  margin-bottom: 0.4rem;
+}
+
+.scrolly-step-title {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-heading);
+}
+
+.scrolly-step-text {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Animaciones de paquetes que viajan entre pantallas */
+.flying-chunk {
+  position: absolute;
+  width: 32px;
+  height: 20px;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 0.6rem;
+  font-weight: 700;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px var(--accent-bg);
+  z-index: 10;
+  pointer-events: none;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+}
+
+/* --------------------------------------------------------------------------
+   2. Simulador Interactivo de NetDrop (100% en el Cliente)
+   -------------------------------------------------------------------------- */
+
+.simulator-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  margin-top: 3.5rem;
+  box-shadow: var(--shadow-md);
+}
+
+.simulator-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.sim-mode-toggle {
+  display: inline-flex;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 0.25rem;
+}
+
+.sim-mode-btn {
+  background: transparent;
+  border: none;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.sim-mode-btn.active {
+  background: var(--surface);
+  color: var(--text-heading);
+  box-shadow: var(--shadow-sm);
+}
+
+.sim-viewports-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.sim-pane {
+  background: var(--bg-base);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sim-pane-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.sim-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+.sim-file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  flex: 1;
+}
+
+.sim-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: var(--transition-fast);
+}
+
+.sim-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+}
+
+.sim-card-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.sim-action-btn {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.sim-action-btn:hover {
+  color: var(--text-heading);
+  border-color: var(--accent);
+}
+
+.sim-action-btn.btn-delete:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* Indicador de Chunks en Tránsito */
+.sim-transfer-bar {
+  background: var(--surface-elevated);
+  border-radius: var(--radius-full);
+  height: 8px;
+  overflow: hidden;
+  margin: 0.75rem 0;
+  display: none;
+}
+
+.sim-transfer-progress {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+/* --------------------------------------------------------------------------
+   3. Calculadora de Fragmentos (Chunks de 2 MB)
+   -------------------------------------------------------------------------- */
+
+.calculator-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem;
+  margin-top: 3rem;
+}
+
+.calc-slider-wrap {
+  margin: 1.5rem 0;
+}
+
+.calc-slider {
+  width: 100%;
+  accent-color: var(--accent);
+  height: 6px;
+  cursor: pointer;
+}
+
+.calc-results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  background: var(--bg-base);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.calc-result-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.calc-result-num {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+.calc-result-label {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   4. Asistente Interactivo de Problemas (#problemas)
+   -------------------------------------------------------------------------- */
+
+.troubleshoot-wizard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem;
+  margin-top: 2rem;
+}
+
+.wizard-step-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.wizard-question {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+
+.wizard-answers {
+  display: flex;
+  gap: 1rem;
+}
+
+.wizard-result-box {
+  background: var(--accent-bg);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 1.25rem;
+  margin-top: 1rem;
+  display: none;
+}
+
+.wizard-result-title {
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+
+/* --------------------------------------------------------------------------
+   5. Tooltips de Three.js en el Hero
+   -------------------------------------------------------------------------- */
+
+.hero-node-tooltip {
+  position: absolute;
+  background: rgba(17, 20, 26, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-hover);
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-heading);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform: translate(-50%, -120%);
+  z-index: 20;
+}
+
+.hero-node-tooltip.visible {
+  opacity: 1;
+}
+
+.btn-send-packet {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 15;
+  background: rgba(17, 20, 26, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: var(--transition-fast);
+}
+
+.btn-send-packet:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Scrollytelling
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 960px) {
+  .scrolly-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .scrolly-stage {
+    position: relative;
+    top: 0;
+    height: 380px;
+    max-height: 400px;
+  }
+
+  .scrolly-steps-col {
+    padding: 1rem 0 4rem;
+    gap: 3rem;
+  }
+
+  .scrolly-step-card {
+    opacity: 1;
+    transform: none;
+  }
+
+  .sim-viewports-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .calc-results-grid {
+    grid-template-columns: 1fr;
+  }
+}

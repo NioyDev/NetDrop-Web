@@ -10,7 +10,7 @@
   <meta name="theme-color" content="#0a0c10">
   <meta name="color-scheme" content="dark">
 
-  <!-- Verificación de Google Search Console (activar cuando se proporcione token) -->
+  <!-- Verificación de Google Search Console -->
   <!-- <meta name="google-site-verification" content="TU_TOKEN_AQUI"> -->
 
   <!-- Open Graph / Redes Sociales -->
@@ -38,8 +38,9 @@
   <!-- Hojas de Estilos -->
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="./css/animations.css">
+  <link rel="stylesheet" href="./css/scrollytelling.css">
 
-  <!-- Datos Estructurados JSON-LD (@graph único válido) -->
+  <!-- Datos Estructurados JSON-LD (@graph) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -107,6 +108,7 @@
         <ul class="nav-links">
           <li><a href="#inicio" class="nav-link active">Inicio</a></li>
           <li><a href="#como-funciona" class="nav-link">Cómo funciona</a></li>
+          <li><a href="#simulador" class="nav-link">Simulador</a></li>
           <li><a href="#funciones" class="nav-link">Funciones</a></li>
           <li><a href="#versiones" class="nav-link">Versiones</a></li>
           <li><a href="#descargas" class="nav-link">Descargas</a></li>
@@ -195,9 +197,8 @@ python app.py</code></pre>
             </div>
           </div>
 
-          <!-- Escena 3D Three.js con espacio reservado (CLS = 0) -->
+          <!-- Escena 3D Three.js Interactiva (Rotación, Tooltips y Simular Envío) -->
           <div class="hero-scene-container" id="hero-scene-container">
-            <!-- Esqueleto SVG sin texto de carga -->
             <div class="hero-skeleton">
               <svg class="skeleton-svg" viewBox="0 0 400 280" role="img" aria-label="Ilustración esquemática de la red local">
                 <circle cx="200" cy="140" r="38" fill="var(--surface-elevated)" stroke="var(--border-hover)" stroke-width="2" />
@@ -208,7 +209,16 @@ python app.py</code></pre>
                 <circle cx="200" cy="230" r="20" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5" />
               </svg>
             </div>
+
             <canvas id="hero-canvas"></canvas>
+
+            <!-- Tooltip flotante interactivo de Three.js -->
+            <div class="hero-node-tooltip"></div>
+
+            <!-- Botón de Simular Envío en 3D -->
+            <button type="button" class="btn-send-packet" title="Disparar paquetes luminosos en 3D">
+              <span>⚡ Simular Envío</span>
+            </button>
           </div>
         </div>
 
@@ -236,34 +246,120 @@ python app.py</code></pre>
     </section>
 
     <!-- ====================================================================
-         2. CÓMO FUNCIONA (#como-funciona)
+         2. CÓMO FUNCIONA: SCROLLYTELLING ESTILO APPLE (#como-funciona)
          ==================================================================== -->
     <section id="como-funciona" class="page-section">
       <div class="container">
         <div class="section-header">
-          <span class="section-tag">Flujo del Sistema</span>
+          <span class="section-tag">Narración Progresiva</span>
           <h2 class="section-title">Cómo funciona NetDrop paso a paso</h2>
           <p class="section-description">
-            Comportamiento técnico real de una transferencia: desde el enlace en el puerto 5000 hasta el ensamblado final en disco.
+            Desplázate hacia abajo para ver cómo interactúan la PC y el celular en tiempo real a través de los 7 pasos de una transferencia.
           </p>
         </div>
 
-        <!-- Reproductor Interactivo SVG de los 7 Pasos -->
-        <div class="interactive-player" id="interactive-player">
-          <nav class="player-stepper" aria-label="Selector de los 7 pasos técnicos"></nav>
-          <div class="player-viewport" role="region" aria-live="polite"></div>
-          <div class="player-controls">
-            <div class="control-buttons">
-              <button type="button" class="control-btn btn-prev" title="Paso anterior" aria-label="Paso anterior">◀</button>
-              <button type="button" class="control-btn btn-play-pause" title="Pausar o reproducir" aria-label="Pausar o reproducir">⏸</button>
-              <button type="button" class="control-btn btn-next" title="Paso siguiente" aria-label="Paso siguiente">▶</button>
-            </div>
-            <div class="step-info-text">
-              <div class="step-info-title">Cargando paso...</div>
-              <p class="step-info-desc"></p>
+        <div class="scrolly-container">
+          <!-- Escenario Sticky con marcos de PC y Smartphone genéricos -->
+          <div class="scrolly-stage-col">
+            <div class="scrolly-stage">
+              <div class="devices-stage">
+                <!-- Marco PC -->
+                <div class="device-pc">
+                  <div class="screen-content" id="scrolly-pc-screen">
+                    <div class="screen-header">
+                      <span class="screen-brand">NetDrop Desktop</span>
+                      <span class="screen-ip">Puerto :5000</span>
+                    </div>
+                    <div style="margin-top: 1rem; text-align: center; color: var(--accent);">
+                      <div style="font-weight: 700; font-size: 0.85rem;">Servidor Iniciado ✓</div>
+                      <div style="font-size: 0.65rem; color: var(--text-muted); font-family: var(--font-mono); margin-top: 0.3rem;">http://0.0.0.0:5000</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="device-pc-stand"></div>
+                <div class="device-pc-base"></div>
+
+                <!-- Marco Smartphone -->
+                <div class="device-phone">
+                  <div class="phone-notch"></div>
+                  <div class="screen-content" id="scrolly-phone-screen">
+                    <div style="flex: 1; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--text-muted); font-size: 0.7rem;">
+                      En espera de conexión Wi-Fi
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+
+          <!-- Columna de Pasos de Texto Scrolly (1 a 7) -->
+          <div class="scrolly-steps-col">
+            <article class="scrolly-step-card active-step" data-step="1">
+              <div class="scrolly-step-num">Paso 01 / 07</div>
+              <h3 class="scrolly-step-title">1. Arranque en puerto 5000</h3>
+              <p class="scrolly-step-text">
+                NetDrop se ejecuta en tu PC e inicializa un servidor HTTP local en el puerto <code>5000</code> en un subproceso daemon, abriendo simultáneamente la ventana de escritorio nativa con Pywebview.
+              </p>
+            </article>
+
+            <article class="scrolly-step-card" data-step="2">
+              <div class="scrolly-step-num">Paso 02 / 07</div>
+              <h3 class="scrolly-step-title">2. Descubrimiento de IP y QR</h3>
+              <p class="scrolly-step-text">
+                La aplicación detecta automáticamente la IP privada de tu tarjeta Wi-Fi o Ethernet (ej. <code>192.168.1.15:5000</code>) y genera en pantalla un código QR con el logotipo de NetDrop en el centro.
+              </p>
+            </article>
+
+            <article class="scrolly-step-card" data-step="3">
+              <div class="scrolly-step-num">Paso 03 / 07</div>
+              <h3 class="scrolly-step-title">3. Escaneo móvil y enlace directo</h3>
+              <p class="scrolly-step-text">
+                El teléfono móvil apunta su cámara nativa al código QR. Al estar ambos dispositivos en la misma red Wi-Fi, el navegador móvil carga la interfaz web al instante sin descargar aplicaciones de la App Store o Play Store.
+              </p>
+            </article>
+
+            <article class="scrolly-step-card" data-step="4">
+              <div class="scrolly-step-num">Paso 04 / 07</div>
+              <h3 class="scrolly-step-title">4. Subida fragmentada en chunks de 2 MB</h3>
+              <p class="scrolly-step-text">
+                Al transferir un archivo pesado, JavaScript lo divide en bloques de <strong>2 MB</strong>. Cada fragmento viaja de forma independiente a la carpeta temporal <code>temp_chunks/</code> liberando memoria RAM de inmediato para evitar bloqueos OOM.
+              </p>
+            </article>
+
+            <article class="scrolly-step-card" data-step="5">
+              <div class="scrolly-step-num">Paso 05 / 07</div>
+              <h3 class="scrolly-step-title">5. Sincronización en vivo cada 2 segundos</h3>
+              <p class="scrolly-step-text">
+                Al completarse el ensamblado atómico en el disco de la PC, el sondeo periódico de 2 segundos (Live Sync) detecta el nuevo archivo y lo muestra simultáneamente en todas las pantallas conectadas sin recargar.
+              </p>
+            </article>
+
+            <article class="scrolly-step-card" data-step="6">
+              <div class="scrolly-step-num">Paso 06 / 07</div>
+              <h3 class="scrolly-step-title">6. Descarga a un clic y eliminación reactiva</h3>
+              <p class="scrolly-step-text">
+                Cualquier usuario puede reproducir el contenido en el visor integrado o descargarlo a su almacenamiento. Si se elimina un archivo de la PC, la tarjeta desaparece de todas las pantallas con una animación de salida suave.
+              </p>
+            </article>
+
+            <article class="scrolly-step-card" data-step="7">
+              <div class="scrolly-step-num">Paso 07 / 07</div>
+              <h3 class="scrolly-step-title">7. Personalización con temas en JSON</h3>
+              <p class="scrolly-step-text">
+                La interfaz cuenta con 5 paletas oficiales de color (Cálido Terracota, Oscuro Minimal, Bosque Verde, Noche Ámbar y Nórdico Frío) almacenadas en <code>themes.json</code> y persistentes en disco.
+              </p>
+            </article>
+          </div>
         </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SIMULADOR INTERACTIVO (#simulador)
+         ==================================================================== -->
+    <section id="simulador" class="page-section">
+      <div class="container">
+        <div id="netdrop-simulator" class="simulator-box"></div>
       </div>
     </section>
 
@@ -328,6 +424,38 @@ python app.py</code></pre>
             <h3>Visor Multimedia Integrado</h3>
             <p>Previsualización inline de imágenes, reproducción de audio y video, y lectura de código o texto directamente en el navegador.</p>
           </article>
+        </div>
+
+        <!-- Calculadora Interactiva de Chunks de 2 MB -->
+        <div class="calculator-card" id="calculadora-chunks">
+          <span class="section-tag">Herramienta Interactiva</span>
+          <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Calculadora de Fragmentos (Chunks de 2 MB)</h3>
+          <p style="font-size: 0.92rem; color: var(--text-muted);">
+            Descubre cuántos fragmentos se generarán al enviar un archivo pesado desde tu teléfono móvil. NetDrop procesa hasta 1000 MB por archivo.
+          </p>
+
+          <div class="calc-slider-wrap">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem;">
+              <span style="font-weight: 600; font-size: 0.95rem;">Tamaño del archivo a transferir:</span>
+              <span id="chunk-size-display" style="font-weight: 800; font-size: 1.25rem; color: var(--accent); font-family: var(--font-mono);">120 MB</span>
+            </div>
+            <input type="range" id="chunk-size-slider" class="calc-slider" min="10" max="1000" step="10" value="120">
+          </div>
+
+          <div class="calc-results-grid">
+            <div class="calc-result-item">
+              <span class="calc-result-num" id="chunk-count-display">60 fragmentos</span>
+              <span class="calc-result-label">Total de Chunks generados en cliente</span>
+            </div>
+            <div class="calc-result-item">
+              <span class="calc-result-num">2 MB</span>
+              <span class="calc-result-label">Tamaño fijo por bloque HTTP</span>
+            </div>
+            <div class="calc-result-item">
+              <span class="calc-result-num" id="chunk-ram-display">Máx 2 MB en RAM</span>
+              <span class="calc-result-label">Cero riesgo de Out-Of-Memory móvil</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -410,7 +538,6 @@ python app.py</code></pre>
         </div>
 
         <div class="downloads-panel-wrapper">
-          <!-- Pestañas Python / Rust en el HTML inicial -->
           <div class="downloads-nav-tabs" role="tablist">
             <button type="button" class="dl-tab-btn active" data-target="tab-python" role="tab" aria-selected="true">
               <span class="table-tag tag-python">Python</span>
@@ -473,7 +600,6 @@ python app.py</code></pre>
               </table>
             </div>
 
-            <!-- Aviso sobre Windows SmartScreen -->
             <div class="smartscreen-alert">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
               <div>
@@ -525,10 +651,9 @@ cargo build --release --features desktop</code></pre>
           <a href="#instalacion" class="docs-sublink">1. Instalación</a>
           <a href="#uso" class="docs-sublink">2. Conexión QR</a>
           <a href="#api" class="docs-sublink">3. Endpoints de la API</a>
-          <a href="#problemas" class="docs-sublink">4. Firewall y Puerto 5000</a>
+          <a href="#problemas" class="docs-sublink">4. Solución de Problemas</a>
         </nav>
 
-        <!-- Subsección Instalación -->
         <article id="instalacion" class="doc-block">
           <h3>Instalación en Windows y Linux</h3>
           <p>
@@ -541,7 +666,6 @@ cargo build --release --features desktop</code></pre>
           </ul>
         </article>
 
-        <!-- Subsección Uso -->
         <article id="uso" class="doc-block">
           <h3>Guía de Uso y Conexión por Código QR</h3>
           <p>
@@ -555,7 +679,6 @@ cargo build --release --features desktop</code></pre>
           </ol>
         </article>
 
-        <!-- Subsección API -->
         <article id="api" class="doc-block">
           <h3>Especificación de Endpoints y API REST Local</h3>
           <p>
@@ -616,22 +739,27 @@ cargo build --release --features desktop</code></pre>
           </div>
         </article>
 
-        <!-- Subsección Problemas -->
+        <!-- Subsección Problemas con Asistente Interactivo -->
         <article id="problemas" class="doc-block">
-          <h3>Solución de Problemas: Firewall y Puerto 5000</h3>
+          <h3>Solución de Problemas: Firewall y Red Local</h3>
           <p>
-            Si el celular no logra abrir la página tras escanear el código QR, verifica los dos escenarios más habituales:
+            Usa nuestro asistente de diagnóstico interactivo o consulta las instrucciones manuales para el puerto 5000:
           </p>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
-            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-bottom: 0.5rem; font-size: 1rem;">Regla de Firewall (Puerto 5000)</h4>
-              <p style="font-size: 0.88rem;">En Windows, asegúrate de que el Firewall permita el tráfico en redes privadas. En Linux con UFW puedes habilitarlo con:</p>
-              <pre style="background: var(--surface-elevated); padding: 0.6rem; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.8rem; margin-top: 0.5rem;">sudo ufw allow 5000/tcp</pre>
-            </div>
 
-            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-bottom: 0.5rem; font-size: 1rem;">Aislamiento Wi-Fi (AP Isolation)</h4>
-              <p style="font-size: 0.88rem;">En redes públicas, universitarias o de hoteles, los routers suelen aislar los dispositivos entre sí. Si este es tu caso, enciende la <strong>Zona Wi-Fi portátil (Hotspot)</strong> de tu móvil o PC y conecta ambos equipos a ella.</p>
+          <!-- Asistente Interactivo de Problemas -->
+          <div class="troubleshoot-wizard" id="troubleshoot-wizard">
+            <span class="section-tag" style="margin-bottom: 0.3rem;">Diagnóstico Paso a Paso</span>
+            <div class="wizard-step-wrap">
+              <div class="wizard-question">1. ¿Están ambos dispositivos conectados exactamente a la misma red Wi-Fi?</div>
+              <div class="wizard-answers">
+                <button type="button" class="btn btn-primary wizard-btn-yes" style="padding: 0.45rem 1rem;">Sí</button>
+                <button type="button" class="btn btn-secondary wizard-btn-no" style="padding: 0.45rem 1rem;">No</button>
+                <button type="button" class="btn btn-ghost wizard-btn-reset" style="padding: 0.45rem 0.75rem; margin-left: auto;">↺ Reiniciar</button>
+              </div>
+              <div class="wizard-result-box">
+                <div class="wizard-result-title"></div>
+                <div class="wizard-result-text" style="font-size: 0.9rem; color: var(--text);"></div>
+              </div>
             </div>
           </div>
         </article>
@@ -727,6 +855,7 @@ cargo build --release --features desktop</code></pre>
           <ul>
             <li><a href="#inicio">Inicio</a></li>
             <li><a href="#como-funciona">Cómo funciona</a></li>
+            <li><a href="#simulador">Simulador en vivo</a></li>
             <li><a href="#funciones">Funciones</a></li>
             <li><a href="#versiones">Versiones Python y Rust</a></li>
             <li><a href="#descargas">Descargas oficiales</a></li>
@@ -753,12 +882,13 @@ cargo build --release --features desktop</code></pre>
     </div>
   </footer>
 
-  <!-- Scripts -->
+  <!-- Scripts Modulares -->
   <script type="module" src="./js/main.js"></script>
-  <script type="module" src="./js/animations.js"></script>
+  <script type="module" src="./js/scrollytelling.js"></script>
+  <script type="module" src="./js/simulator.js"></script>
+  <script type="module" src="./js/interactive-tools.js"></script>
   <script type="module">
     import { initHeroScene } from './js/hero-scene.js';
-    // Inicialización del 3D con requestIdleCallback para no competir con el LCP
     if ('requestIdleCallback' in window) {
       requestIdleCallback(() => {
         initHeroScene('hero-scene-container', 'hero-canvas');
