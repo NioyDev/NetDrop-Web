@@ -3,7 +3,7 @@
  * Soporta rotación libre con el cursor, tooltips por raycasting y botón 'Simular Envío'
  */
 
-import logoUrl from '../assets/logo.png';
+const logoUrl = './assets/logo.png';
 import {
   Scene,
   PerspectiveCamera,

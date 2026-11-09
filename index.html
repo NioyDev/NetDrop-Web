@@ -882,6 +882,15 @@ cargo build --release --features desktop</code></pre>
     </div>
   </footer>
 
+  <!-- Import Map para compatibilidad nativa en Live Server (sin bundler) y Vite -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "./js/vendor/three.module.js"
+    }
+  }
+  </script>
+
   <!-- Scripts Modulares -->
   <script type="module" src="./js/main.js"></script>
   <script type="module" src="./js/scrollytelling.js"></script>
